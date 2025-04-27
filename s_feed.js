@@ -31,9 +31,9 @@ async function main() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("✅ Connected to Database");
+    console.log("Connected to Database");
   } catch (err) {
-    console.error("❌ Database connection error:", err);
+    console.error("Database connection error:", err);
   }
 }
 main();
