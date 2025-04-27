@@ -1,4 +1,7 @@
 node_modules/
 .env
-*.log
-.DS_Store
+*.jpg
+*.jpeg
+*.png
+*.zip
+*.mp4
