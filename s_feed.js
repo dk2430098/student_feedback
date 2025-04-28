@@ -22,8 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// const mongoose = require("mongoose");
-
 // Database connection
 async function main() {
   try {
@@ -81,20 +79,28 @@ app.post("/request-otp", async (req, res) => {
 // Verify-otp
 app.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;
-  if (!email || !otp) return res.status(400).send("Email and OTP are required");
+  console.log(`Received OTP verification request: email=${email}, otp=${otp}`);
+  if (!email || !otp) {
+    return res.status(400).json({ error: "Email and OTP are required" });
+  }
 
+  console.log(`Stored OTP for ${email}: ${otpCache[email]}`);
   if (otpCache[email] === otp) {
     delete otpCache[email];
     const student = await StudentDetails.findOne({ email });
     if (student) {
-      // Redirect to Reset Password page and pass email
-      return res.render("reset_password", { email });
+      console.log(`OTP verified for email: ${email}`);
+      return res
+        .status(200)
+        .json({ message: "OTP verified successfully", email });
     } else {
-      return res.send("Student not found");
+      console.log(`Student not found for email: ${email}`);
+      return res.status(404).json({ error: "Student not found" });
     }
   }
 
-  res.send("Invalid OTP");
+  console.log(`Invalid OTP for email: ${email}`);
+  res.status(400).json({ error: "Invalid OTP" });
 });
 
 // Routes
@@ -166,7 +172,13 @@ app.post("/create_user", async (req, res) => {
 });
 
 // Reset Password
-app.post("/reset-password", async (req, res) => {
+app.get("/reset-password", async (req, res) => {
+  const { email } = req.query;
+  if (!email) return res.status(400).send("Email is required");
+  res.render("reset_password", { email });
+});
+
+app.post("/reset_password", async (req, res) => {
   const { email, newPassword, confirmPassword } = req.body;
 
   if (!email || !newPassword || !confirmPassword) {
