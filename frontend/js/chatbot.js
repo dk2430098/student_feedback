@@ -33,7 +33,7 @@ const generateResponse = async (chatElement) => {
         });
         const data = await response.json();
 
-        if (!response.ok) throw new Error(data.error.message);
+        if (!response.ok) throw new Error(data.message || "Server Error");
 
         // Sanitize: Escape HTML characters to prevent XSS
         let reply = data.reply
@@ -52,7 +52,7 @@ const generateResponse = async (chatElement) => {
 
     } catch (error) {
         messageElement.classList.add("error");
-        messageElement.textContent = "Oops! Something went wrong. Please try again.";
+        messageElement.textContent = error.message; // Show specific error from backend (e.g. "Python missing")
     } finally {
         chatbox.scrollTo(0, chatbox.scrollHeight);
     }
