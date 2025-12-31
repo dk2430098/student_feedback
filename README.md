@@ -2,7 +2,7 @@
 
 A comprehensive feedback management system designed to bridge the gap between students and administration. This full-stack application allows students to submit complaints anonymously or officially, while providing Wardens and Admins with powerful dashboards to resolve issues efficiently.
 
-![Project Preview](https://via.placeholder.com/800x400?text=Student+Feedback+Portal+UI)
+![Project Preview](frontend/assets/images/preview.png)
 
 ---
 
