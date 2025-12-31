@@ -1,5 +1,9 @@
 # Student Feedback Portal (NIT Manipur)
 
+<div align="center">
+  <img src="frontend/assets/images/nitmn_logo.jpg" alt="NITMN Logo" width="120" height="120">
+</div>
+
 A digital grievance redressal system designed effectively for **NIT Manipur**. This platform bridges the gap between students and the administration by providing a transparent, fast, and accountable way to resolve campus issues.
 
 ---
@@ -58,23 +62,45 @@ The system is divided into **4 Distinct Roles**, each with specific permissions 
 
 ---
 
-## ⚙️ How It Works (Backend Integrations)
+## 📬 Email & Messaging Architecture (Dual System)
 
-We use powerful external services to make the system robust:
+We utilize **two separate email channels** to optimize performance and security:
 
-*   **Authentication (OTP & Security)**:
-    *   We use **Nodemailer + Gmail SMTP** to send real 6-digit OTPs to users during signup.
-    *   Passwords are never stored in plain text; we use **Bcrypt Hashing**.
-    *   Sessions are secured using **JWT (JSON Web Tokens)**.
+1.  **Transactional Emails (Nodemailer + Gmail SMTP)**
+    *   **Purpose**: Critical System functions like **New Account Verification (OTP)** and internal notifications.
+    *   **Why**: We need full control and security for sending OTPs.
+    *   **Flow**: User -> Backend API -> Nodemailer -> Gmail App Server -> User Inbox.
 
-*   **Media Handling**:
-    *   When a student uploads a photo of a broken window, we don't clog our database.
-    *   The file is sent to **Cloudinary** (a cloud media service).
-    *   We only store the *secure link* in our **MongoDB Atlas** database.
+2.  **Public Contact Form (Formspree)**
+    *   **Purpose**: Handling public "Send a Message" queries from the Landing Page (before login).
+    *   **Why**: Removes the need for backend storage of generic spam/queries. Formspree handles spam filtering and forwarding.
+    *   **Flow**: Website Visitor -> Formspree API -> Admin Email Inbox.
 
-*   **Public Contact Form**:
-    *   The "Contact Us" form on the landing page is powered by **Formspree**.
-    *   Messages sent there go directly to the Admin's email inbox without needing a backend server to process them.
+---
+
+## 📦 Dependencies & Packages Used
+
+The project relies on these specific highly reliable packages:
+
+### **Security & Auth**
+*   **`bcrypt`**: For reliable password hashing.
+*   **`jsonwebtoken`**: For secure, stateless session management.
+*   **`helmet`**: Adds security headers to protect against XSS and basic attacks.
+*   **`express-mongo-sanitize`**: Prevents database injection attacks.
+*   **`express-rate-limit`**: Protects the API from Brute Force and DDoS attacks.
+*   **`cors`**: Manages browser security access from frontend to backend.
+*   **`otp-generator`**: Creates random, cryptographically strong 6-digit codes.
+
+### **Core Backend**
+*   **`express`**: Fast, unopinionated web framework for Node.js.
+*   **`mongoose`**: Elegant MongoDB object modeling for managing data.
+*   **`dotenv`**: For managing environment variables securely (API keys, Credentials).
+*   **`cookie-parser`**: Parses secure HttpOnly cookies for Auth.
+
+### **Media & Communication**
+*   **`nodemailer`**: The industry standard for sending emails from Node.js applications.
+*   **`multer`**: Middleware for handling `multipart/form-data` uploads.
+*   **`cloudinary`** & **`multer-storage-cloudinary`**: Seamless integration for storing uploaded complaint images/videos in the cloud.
 
 ---
 
@@ -98,14 +124,6 @@ We use powerful external services to make the system robust:
 
 ---
 
-## 🛠️ Tech Stack
-
-*   **Frontend**: HTML5, Tailwind CSS, Vanilla JS (Glassmorphism UI).
-*   **Backend**: Node.js, Express.js.
-*   **Database**: MongoDB Atlas.
-
----
-
-## 📬 Contact
+## 📬 Contact Support
 
 *(Developed by Deepak Kumar)*
