@@ -1,6 +1,6 @@
 # Student Feedback Portal (NIT Manipur)
 
-![NITMN Logo](frontend/assets/images/nitmn_logo.jpg)
+![NITMN Logo](./assets/logo.jpg)
 
 A digital grievance redressal system designed effectively for **NIT Manipur**. This platform bridges the gap between students and the administration by providing a transparent, fast, and accountable way to resolve campus issues.
 
