@@ -31,7 +31,8 @@ const chat = async (req, res) => {
 
             if (code !== 0) {
                 console.error(`Python script exited with code ${code}`);
-                return res.status(500).json({ success: false, message: 'Internal AI Error' });
+                // TEMP: Return error to frontend for debugging
+                return res.status(500).json({ success: false, message: `Internal AI Error: ${errorOutput || 'Unknown caused'}` });
             }
 
             try {
