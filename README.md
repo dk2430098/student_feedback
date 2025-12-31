@@ -1,117 +1,114 @@
-# Student Feedback Portal (NIT Manipur)
-<p align="center">
-  <a href="https://student-feedback-beta.vercel.app" target="_blank">
-    <img src="https://img.shields.io/badge/Live%20Demo-Visit%20App-brightgreen?style=for-the-badge&logo=vercel&logoColor=white" />
-  </a>
-  &nbsp;&nbsp;
-  <a href="https://github.com/dk2430098/student_feedback" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub%20Repo-View%20Code-black?style=for-the-badge&logo=github&logoColor=white" />
-  </a>
-</p>
+# 🎓 Student Feedback Portal (NIT Manipur)
 
+A comprehensive feedback management system designed to bridge the gap between students and administration. This full-stack application allows students to submit complaints anonymously or officially, while providing Wardens and Admins with powerful dashboards to resolve issues efficiently.
 
-A comprehensive feedback management system designed for **NIT Manipur** to streamline communication between students, wardens, and administration. Features a secure complaint lodging system, real-time status tracking, and an AI-powered chatbot for instant assistance.
+![Project Preview](https://via.placeholder.com/800x400?text=Student+Feedback+Portal+UI)
 
-![NITMN Logo](frontend/assets/images/nitmn_logo.jpg)
+---
 
 ## 🚀 Features
 
-### 🎓 For Students
-- **Secure Authentication**: Signup/Login with Email OTP verification.
-- **Lodge Complaints**: categorized by **Mess**, **Hostel**, or **Academic** issues.
-- **Evidence Upload**: Attach photos/videos (max 50MB) to support complaints.
-- **Real-time Tracking**: Monitor complaint status (Pending, In-Progress, Resolved).
-- **AI Chatbot**: Instant answers to campus queries using Python/ML (TF-IDF).
+### 👨‍🎓 **Student Module**
+*   **Secure Auth**: Signup/Login with Email OTP verification.
+*   **Complaint Filing**: Submit complaints (Academics, Hostel, Mess, etc.) with **Image/Video Proofs**.
+*   **Track Status**: Real-time updates (Pending -> Resolved) with color-coded badges.
+*   **Profile Management**: Update academic details and profile picture.
+*   **AI Chatbot**: A smart assistant (Python/ML-based) to answer common queries instantly.
 
-### 👮‍♂️ For Wardens & Admin
-- **Role-based Dashboards**: distinct views for Wardens, Supervisors, and Admin.
-- **Complaint Management**: View, Assign, and Resolve complaints.
-- **Proof of Resolution**: Upload evidence when closing a complaint.
-- **Analytics**: Visual overview of complaint stats.
+### 👮 **Warden/Supervisor Module**
+*   **Complaint Dashboard**: View complaints filtered by category (e.g., specific Hostel Block).
+*   **Action Center**: Mark complaints as "Resolved" and attach **Resolution Proofs** (photos of the fixed issue).
+*   **Profile**: Manage supervisor details.
 
-## 🛠️ Tech Stack
+### 👑 **Admin Module**
+*   **Analytics**: Visual charts showing complaint volume and resolution rates.
+*   **User Management**: Manage Students, Wardens, and Supervisors.
+*   **Global Oversight**: Access to all complaints across the institution.
 
-- **Frontend**: HTML5, Tailwind CSS, JavaScript (Vanilla).
-- **Backend**: Node.js, Express.js.
-- **Database**: MongoDB (Mongoose).
-- **AI/ML**: Python (`scikit-learn`, `numpy`) for Chatbot logic.
-- **Security**: JWT Auth, OTP Verification, Rate Limiting, Input Sanitization.
+---
 
-## 📂 Project Structure
+## 🛠️ Tech Stack & Decisions
 
-```
-student_feedback/
-├── backend/
-│   ├── controllers/      # Logic for Auth, Chat, Complaints
-│   ├── data/            # Knowledge Base for Chatbot
-│   ├── middleware/       # Auth, Upload, Security
-│   ├── ml/              # Python Chatbot Engine
-│   ├── models/           # MongoDB Schemas (User, Complaint, OTP)
-│   ├── routes/           # API Routes
-│   └── server.js         # Entry point
-├── frontend/
-│   ├── css/             # Styles (Tailwind + Custom)
-│   ├── dashboards/       # Role-specific dashboard HTML
-│   ├── js/              # Frontend Logic
-│   └── index.html        # Landing Page
-└── README.md
-```
+### **Backend (Node.js & Python)**
+We chose a **Hybrid Backend** to leverage the speed of Node.js for API handling and the power of Python for Machine Learning.
+*   **Node.js & Express**: Fast, non-blocking I/O for handling concurrent API requests.
+*   **MongoDB (Atlas)**: Flexible NoSQL schema, perfect for storing varied complaint data and user profiles.
+*   **Mongoose**: ODM for strict schema modeling and data validation.
+*   **Nodemailer**: Used for **OTP Generation & Email Notifications**. We chose this over third-party APIs (like Twilio) to keep costs zero for the university.
+*   **Cloudinary**: Handles **Image & Video Uploads**. It optimizes media automatically, saving bandwidth.
+*   **Python (Scikit-Learn)**: Powers the **Chatbot**. We used a TF-IDF (Term Frequency-Inverse Document Frequency) + Cosine Similarity model to match user queries with a flexible knowledge base.
+*   **Child Process**: The Node server spawns a Python process to get chatbot answers in real-time.
 
-## 🔧 Installation & Setup
+### **Frontend (Vanilla JS + Tailwind)**
+*   **Vanilla JavaScript**: No heavy frameworks (React/Angular) to ensure **maximum performance** and fast load times on campus networks.
+*   **Tailwind CSS**: Utility-first CSS for a modern, responsive, and "Premium" glassmorphism design.
+*   **Vercel**: Chosen for frontend hosting due to its global CDN and ease of CI/CD.
 
-1.  **Clone the Repository**
+---
+
+## 🏗️ Architecture & Implementation
+
+### **1. Authentication System (OTP)**
+To prevent spam, we implemented a 2-step verification:
+1.  User enters email/password.
+2.  Backend generates a 6-digit OTP using `crypto.randomInt`, hashes it using `bcrypt`, and stores it temporarily in the DB.
+3.  `Nodemailer` sends the code via SMTP (Gmail).
+4.  Account is only created after valid OTP submission.
+
+### **2. Dynamic Configuration**
+Since the frontend (Vercel) and backend (Render) are separate:
+*   We use a `generate-config.js` script during the build process.
+*   It reads the `API_BASE_URL` from Vercel's Environment Variables and injects it into `config.js`.
+*   This allows the code to work seamlessly on `localhost` (dev) and `deployment` (prod) without changing a single line of code.
+
+### **3. The "Hybrid" Chatbot**
+Instead of a simple if-else bot, we built a Context-Aware ML Bot:
+*   **Input**: User types "Food is bad".
+*   **Processing**:
+    1.  Node.js receives the request.
+    2.  Spawns `python3 chatbot.py "Food is bad"`.
+    3.  Python loads `knowledgeBase.json`, vectorizes the text using `TfidfVectorizer`, finds the closest match using `cosine_similarity`.
+*   **Output**: "Please report this in the Mess category...".
+
+---
+
+## 🧗 Challenges & Solutions
+
+### **1. The "Cold Start" Problem**
+*   **Problem**: Users reported "Login is slow". This was because Render's Free Tier puts the server to sleep after 15 mins of inactivity.
+*   **Solution**: We implemented a "Keep-Alive" ping and added **Loading Spinners** to all buttons (Login/Signup/OTP). This gives users immediate visual feedback that "something is happening," improving User Experience (UX) significantly.
+
+### **2. Deployment Dependencies (Python on Node)**
+*   **Problem**: The Chatbot failed in production with `ModuleNotFoundError`. Render's Node environment doesn't strictly manage Python packages.
+*   **Solution**: We wrote a custom `render-build.sh` script. It explicitly installs `npm` dependencies AND `pip install -r requirements.txt` (scikit-learn, pandas) every time the server builds.
+
+### **3. Cross-Origin Resource Sharing (CORS)**
+*   **Problem**: The Frontend (Vercel) couldn't talk to the Backend (Render) due to browser security policies.
+*   **Solution**: We configured the Express `cors` middleware to explicitly allow requests from our Vercel domain, ensuring secure but functional communication.
+
+### **4. UI Layout Bugs**
+*   **Problem**: Use of `absolute` positioning for the footer caused it to cover the Signup form on small screens.
+*   **Solution**: Refactored the entire authentication flow to use a vertical Flexbox layout (`flex-col`). The footer now sits naturally at the bottom (`mt-auto`), pushing down only when content ends.
+
+---
+
+## 🚀 Setup & Installation
+
+### **Backend**
+1.  Navigate to `/backend`.
+2.  Install dependencies:
     ```bash
-    git clone https://github.com/dk2430098/student_feedback.git
-    cd student_feedback
-    ```
-
-2.  **Install Backend Dependencies**
-    ```bash
-    cd backend
     npm install
-    # Install Python dependencies
-    pip3 install scikit-learn numpy
+    pip install -r requirements.txt
     ```
+3.  Create `.env` file with `MONGO_URL`, `JWT_SECRET`, `EMAIL_USER`, `EMAIL_PASS`, `CLOUDINARY_XXX`.
+4.  Run: `npm start`
 
-3.  **Environment Variables**
-    Create a `.env` file in `backend/` with:
-    ```env
-    PORT=5000
-    MONGO_URL=your_mongodb_connection_string
-    JWT_SECRET=your_jwt_secret
-    EMAIL_HOST=smtp.gmail.com
-    EMAIL_USER=your_email
-    EMAIL_PASS=your_app_password
-    CLOUDINARY_CLOUD_NAME=your_cloud_name
-    CLOUDINARY_API_KEY=your_api_key
-    CLOUDINARY_API_SECRET=your_api_secret
-    ```
+### **Frontend**
+1.  Navigate to `/frontend`.
+2.  Run: `npx serve`
+3.  Open `http://localhost:3000`.
 
-4.  **Run the Application**
-    *   **Backend**: `npm start` (Runs Node server + Spawns Python Chatbot)
-    *   **Frontend**: Open `index.html` or run `npx serve frontend`
+---
 
-## 🔑 Demo Credentials
-
-Use the following credentials to test different user roles:
-
-| Role | Email | Password | Access |
-| :--- | :--- | :--- | :--- |
-| **Student** | `deepak.phulo@gmail.com` | `Deepak@123` | Lodge complaints, Chatbot |
-| **Warden** | `warden.h1@nitmn.ac.in` | `wardenpassword123` | Resolve Hostel complaints |
-| **Supervisor**| `supervisor@nitmn.ac.in` | `supervisor123` | Resolve Academic complaints |
-| **Admin** | `admin@nitmn.ac.in` | `adminpassword123` | Full Dashboard Access |
-
-## 🤖 Chatbot
-
-The chatbot is located in `backend/ml/chatbot.py`. It uses a TF-IDF (Term Frequency-Inverse Document Frequency) model with Cosine Similarity to match user queries against a JSON knowledge base. It handles natural language queries and context awareness.
-
-## 🛡️ Security
-
-- **Rate Limiting**: 100 requests / 15 min per IP.
-- **Input Sanitization**: NoSQL injection protection & XSS escaping.
-- **File Limits**: Max 50MB uploads allowed.
-
-## 📜 License
-
-This project is licensed under the MIT License.
+© 2025 Deepakkumar. Deepmind-Antigravity.
