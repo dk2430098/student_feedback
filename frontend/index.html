@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NITMN - Student Feedback Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <img src="assets/images/nitmn_logo.jpg" alt="NITMN Logo" class="h-12 w-auto mr-3">
+                    <span class="font-bold text-2xl text-slate-900 tracking-tight">NITMN<span
+                            class="text-blue-600">Feedback</span></span>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="text-slate-600 hover:text-blue-600 font-medium">Home</a>
+                    <a href="#about" class="text-slate-600 hover:text-blue-600 font-medium">About</a>
+                    <a href="#contact" class="text-slate-600 hover:text-blue-600 font-medium">Contact</a>
+                </div>
+
+                <!-- Desktop CTA -->
+                <div class="hidden md:block">
+                    <a href="login.html"
+                        class="login-circle flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition transform hover:scale-105 shadow-lg">
+                        <span>Login / Sign Up</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-blue-600 focus:outline-none">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100">
+            <a href="#home" class="block px-4 py-3 text-slate-600 hover:bg-slate-50 font-medium">Home</a>
+            <a href="#about" class="block px-4 py-3 text-slate-600 hover:bg-slate-50 font-medium">About</a>
+            <a href="#contact" class="block px-4 py-3 text-slate-600 hover:bg-slate-50 font-medium">Contact</a>
+            <div class="p-4">
+                <a href="login.html"
+                    class="block w-full text-center bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg">
+                    Login / Sign Up
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Slider / Hero Section -->
+    <div id="home" class="relative bg-slate-900 h-[600px] overflow-hidden">
+        <!-- Slides -->
+        <div id="slider" class="absolute inset-0">
+            <!-- Slide 1 -->
+            <div class="slider-slide absolute inset-0 opacity-100 transition-opacity duration-1000">
+                <img src="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1950&auto=format&fit=crop"
+                    class="w-full h-full object-cover opacity-40" alt="Campus">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center max-w-4xl px-4">
+                        <h1 class="text-4xl md:text-7xl font-bold text-white mb-6 leading-tight">Voice of NITMN</h1>
+                        <p class="text-lg md:text-xl text-slate-200 mb-8 max-w-2xl mx-auto">Empowering students to shape
+                            a better campus experience
+                            through transparent feedback.</p>
+                        <a href="login.html"
+                            class="inline-block bg-white text-slate-900 px-8 py-3 rounded-lg font-bold hover:bg-slate-100 transition shadow-xl">Get
+                            Started</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="slider-slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1950&auto=format&fit=crop"
+                    class="w-full h-full object-cover opacity-40" alt="Students">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center max-w-4xl px-4">
+                        <h1 class="text-4xl md:text-7xl font-bold text-white mb-6 leading-tight">Direct Resolution</h1>
+                        <p class="text-lg md:text-xl text-slate-200 mb-8 max-w-2xl mx-auto">Connect directly with Hostel
+                            Wardens and Administration
+                            for quick solutions.</p>
+                        <a href="signup.html"
+                            class="inline-block bg-blue-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-600 transition shadow-xl">Join
+                            Now</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="slider-slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="https://images.unsplash.com/photo-1592280771190-3e2e4d571952?q=80&w=1950&auto=format&fit=crop"
+                    class="w-full h-full object-cover opacity-40" alt="Library">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center max-w-4xl px-4">
+                        <h1 class="text-4xl md:text-7xl font-bold text-white mb-6 leading-tight">Track Progress</h1>
+                        <p class="text-lg md:text-xl text-slate-200 mb-8 max-w-2xl mx-auto">Real-time status updates on
+                            your complaints. See action
+                            being taken.</p>
+                        <a href="login.html"
+                            class="inline-block bg-white text-slate-900 px-8 py-3 rounded-lg font-bold hover:bg-slate-100 transition shadow-xl">Log
+                            In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider Controls -->
+        <div class="absolute bottom-10 left-0 right-0 flex justify-center space-x-3 z-10">
+            <button onclick="changeSlide(0)"
+                class="w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100"></button>
+            <button onclick="changeSlide(1)"
+                class="w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100"></button>
+            <button onclick="changeSlide(2)"
+                class="w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100"></button>
+        </div>
+    </div>
+
+    <!-- About / Features -->
+    <div id="about" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl font-bold text-slate-900">Why Use This Portal?</h2>
+                <p class="mt-4 text-slate-600">Effectively manage campus issues with our streamlined process.</p>
+            </div>
+            <!-- Stacks on mobile (grid-cols-1), 3 cols on desktop -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 text-center hover:shadow-lg transition">
+                    <div
+                        class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
+                        📝</div>
+                    <h3 class="text-xl font-bold mb-3">Easy Reporting</h3>
+                    <p class="text-slate-600">Submit complaints about Mess, Hostel, or Academic issues in seconds.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 text-center hover:shadow-lg transition">
+                    <div
+                        class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
+                        ⚡</div>
+                    <h3 class="text-xl font-bold mb-3">Fast Action</h3>
+                    <p class="text-slate-600">Wardens get instant notifications. Resolution is prioritized.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 text-center hover:shadow-lg transition">
+                    <div
+                        class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
+                        📸</div>
+                    <h3 class="text-xl font-bold mb-3">Proof Based</h3>
+                    <p class="text-slate-600">Upload photos/videos as evidence and see proof of resolution.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div id="contact" class="py-24 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Get in Touch</h2>
+                    <p class="text-slate-400 mb-8">
+                        National Institute of Technology Manipur is an Institute of National Importance situated in
+                        Imphal, Manipur, India.
+                        It is one of the 31 National Institutes of Technology in India. NIT Manipur started its first
+                        academic session in 2010.
+                    </p>
+
+                    <div class="space-y-4">
+                        <!-- Address -->
+                        <a href="https://maps.google.com/?q=RWJ7+R33, Langol Rd, Lamphelpat, Imphal, Manipur 795004"
+                            target="_blank" class="flex items-start p-4 hover:bg-slate-800 rounded-xl transition group">
+                            <div
+                                class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mr-4 group-hover:bg-blue-600 transition">
+                                📍</div>
+                            <div>
+                                <h4 class="font-bold text-white">Address</h4>
+                                <p class="text-slate-400 group-hover:text-blue-100 transition">RWJ7+R33, Langol Rd,
+                                    Lamphelpat, Imphal, Manipur 795004</p>
+                            </div>
+                        </a>
+
+                        <!-- Phone -->
+                        <a href="tel:03852058566"
+                            class="flex items-start p-4 hover:bg-slate-800 rounded-xl transition group">
+                            <div
+                                class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mr-4 group-hover:bg-blue-600 transition">
+                                📞</div>
+                            <div>
+                                <h4 class="font-bold text-white">Phone</h4>
+                                <p class="text-slate-400 group-hover:text-blue-100 transition">0385 205 8566</p>
+                            </div>
+                        </a>
+
+                        <!-- Email -->
+                        <a href="mailto:admin@nitmanipur.ac.in"
+                            class="flex items-start p-4 hover:bg-slate-800 rounded-xl transition group">
+                            <div
+                                class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mr-4 group-hover:bg-blue-600 transition">
+                                ✉️</div>
+                            <div>
+                                <h4 class="font-bold text-white">Email</h4>
+                                <p class="text-slate-400 group-hover:text-blue-100 transition">admin@nitmanipur.ac.in
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-white text-slate-900 p-8 rounded-2xl">
+                    <h3 class="text-xl font-bold mb-6">Send a Message</h3>
+                    <form id="contactForm" action="https://formspree.io/f/xaqyzjzv" method="POST" class="space-y-4">
+                        <input type="text" name="name" placeholder="Your Name"
+                            class="w-full p-3 bg-slate-50 rounded-lg border border-slate-200" required>
+                        <input type="email" name="email" placeholder="Your Email"
+                            class="w-full p-3 bg-slate-50 rounded-lg border border-slate-200" required>
+                        <textarea name="message" placeholder="Message" rows="4"
+                            class="w-full p-3 bg-slate-50 rounded-lg border border-slate-200" required></textarea>
+                        <button type="submit" id="submitBtn"
+                            class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition">Send
+                            Message</button>
+                    </form>
+                    <p id="formStatus" class="mt-4 text-center font-medium hidden"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-12 text-slate-400 text-sm text-center">
+        <p class="mb-2">Founded: 2010 | Campus: Urban | Director: Dr. D. V. L. N. Somayajulu</p>
+        <p>&copy; 2025 NITMN Student Feedback Portal. All rights reserved.</p>
+    </footer>
+
+    <link rel="stylesheet" href="css/chatbot.css">
+
+    <!-- Chatbot Widget -->
+    <button class="chatbot-toggler">
+        <span class="material-symbols-rounded">💬</span>
+        <span class="material-symbols-rounded">✕</span>
+    </button>
+    <div class="chatbot">
+        <header>
+            <h2>NITMN Assistant</h2>
+            <span class="close-btn material-symbols-rounded">close</span>
+        </header>
+        <ul class="chatbox">
+            <li class="chat incoming">
+                <span>🤖</span>
+                <p>Hi there! 👋<br>How can I help you regarding NIT Manipur today?</p>
+            </li>
+        </ul>
+        <div class="chat-input">
+            <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+            <span id="send-btn" class="material-symbols-rounded">send</span>
+        </div>
+    </div>
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+
+    <script src="js/index.js"></script>
+    <script src="js/chatbot.js"></script>
+</body>
+
+</html>

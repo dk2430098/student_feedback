@@ -1,0 +1,157 @@
+[
+    {
+        "examples": [
+            "hello",
+            "hi",
+            "hey",
+            "greetings",
+            "start",
+            "good morning",
+            "good evening",
+            "hi there"
+        ],
+        "answer": "Hello! I'm the NITMN Feedback Assistant. You can ask me about **NIT Manipur**, **hostel rules**, **complaints**, or **how to use this portal**."
+    },
+    {
+        "examples": [
+            "who is the director",
+            "principal name",
+            "who is head of college",
+            "dean details",
+            "tell me about director",
+            "authority"
+        ],
+        "answer": "The Director of NIT Manipur is **Prof. (Dr.) D. V. L. N. Somayajulu**. You can reach the director's office at `director@nitmanipur.ac.in`."
+    },
+    {
+        "examples": [
+            "who are you",
+            "what is your name",
+            "are you a bot",
+            "identify yourself",
+            "what can you do",
+            "who am i talking to"
+        ],
+        "answer": "I am the **NITMN Assistant**, an AI-powered guide here to help you navigate campus life, lodge complaints, and find information instantly. 🚀"
+    },
+    {
+        "examples": [
+            "what can you help with",
+            "how to use this chatbot",
+            "features of this bot",
+            "what do you know",
+            "help me"
+        ],
+        "answer": "I can help you with:\n- **Academics** (Courses, Departments)\n- **Hostel & Mess** info\n- **Lodging Complaints**\n- **Campus Contact** details\n\nJust ask me anything!"
+    },
+    {
+        "examples": [
+            "where is nit manipur",
+            "college address",
+            "location of campus",
+            "how to reach nit manipur",
+            "map location",
+            "where is it situated"
+        ],
+        "answer": "NIT Manipur is located at **Langol, Imphal-795004, Manipur (India)**. It is situated in a scenic urban campus."
+    },
+    {
+        "examples": [
+            "what courses are offered",
+            "list of departments",
+            "engineering branches",
+            "academic programs",
+            "btech courses",
+            "mtech specializations",
+            "phd available"
+        ],
+        "answer": "We offer B.Tech, M.Tech, M.Sc, and PhD programs. **Engineering Departments**: CSE, Civil, Electrical, ECE, Mechanical. **Sciences**: Physics, Chemistry, Mathematics."
+    },
+    {
+        "examples": [
+            "hostel facilities",
+            "boys hostel availability",
+            "girls hostel details",
+            "accommodation rules",
+            "how to get hostel",
+            "living arrangements"
+        ],
+        "answer": "We have **2 Boys' Hostels** and **1 Girls' Hostel**. Hostel admission forms are available at the Chief Warden's office."
+    },
+    {
+        "examples": [
+            "mess food quality",
+            "what is today food",
+            "food is bad",
+            "menu details",
+            "is non veg available",
+            "eating facilities",
+            "breakfast lunch dinner timings",
+            "chicken availability"
+        ],
+        "answer": "The mess serves both **Vegetarian** and **Non-Vegetarian** food (Chicken/Fish/Egg). Common items include rice, roti, dal, and seasonal vegetables. Special meals are served every 15 days."
+    },
+    {
+        "examples": [
+            "who is my warden",
+            "contact hostel warden",
+            "chief warden number",
+            "complaint against warden",
+            "warden details"
+        ],
+        "answer": "You can find Warden contact details in your specific Hostel Block notice board. For portal issues, you can lodge a complaint here directly."
+    },
+    {
+        "examples": [
+            "how to lodge a complaint",
+            "file a report",
+            "i have a problem",
+            "if food is bad how to complain",
+            "submit grievance",
+            "complaint process",
+            "report an issue"
+        ],
+        "answer": "To report an issue: \n1. **Login** to your student account.\n2. Go to 'Lodge Complaint'.\n3. Fill details and upload proof (if any).\n4. Submit! You can track status in your dashboard."
+    },
+    {
+        "examples": [
+            "how to login",
+            "login here",
+            "sign in link",
+            "create account",
+            "signup process",
+            "forgot password",
+            "login problem"
+        ],
+        "answer": "To access the portal, click the **Login / Sign Up** button at the top right. Students can sign up using their institute email ID."
+    },
+    {
+        "examples": [
+            "what is this website",
+            "about this portal",
+            "purpose of feedback system",
+            "why use this"
+        ],
+        "answer": "This **Student Feedback Portal** creates a direct link between students and administration. It ensures transparency, tracks complaint resolution, and helps improve campus life."
+    },
+    {
+        "examples": [
+            "ragging complaint",
+            "is ragging allowed",
+            "harassment report",
+            "safety on campus",
+            "bullying help"
+        ],
+        "answer": "**Zero Tolerance!** NIT Manipur is a ragging-free campus. Please report any such incidents immediately to the Anti-Ragging Committee or use this portal to report anonymously."
+    },
+    {
+        "examples": [
+            "contact number",
+            "email address",
+            "how to contact admin",
+            "support team",
+            "phone number"
+        ],
+        "answer": "**Phone**: 0385 205 8566\n**Email**: admin@nitmanipur.ac.in"
+    }
+]

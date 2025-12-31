@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warden Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="bg-slate-50 h-screen flex flex-col text-slate-900">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm z-10 sticky top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Brand -->
+                <div class="flex items-center gap-4">
+                    <img src="../assets/images/nitmn_logo.jpg" alt="Logo" class="h-8 w-auto">
+                    <h1 id="dashboard-title"
+                        class="text-xl font-bold text-slate-800 truncate max-w-[200px] md:max-w-none">Warden Dashboard
+                    </h1>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button onclick="switchTab('dashboard')" id="tab-dashboard"
+                        class="text-blue-600 font-medium px-3 py-2 border-b-2 border-blue-600 transition">Complaints</button>
+                    <button onclick="switchTab('profile')" id="tab-profile"
+                        class="text-slate-500 font-medium px-3 py-2 hover:text-blue-600 transition">Profile</button>
+                    <button onclick="logout()"
+                        class="text-red-500 font-medium px-3 py-2 hover:bg-red-50 rounded-lg transition">Logout</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-500 hover:text-blue-600 focus:outline-none">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-slate-100 mt-2 pt-2 bg-white">
+                <div class="flex flex-col space-y-2">
+                    <button onclick="switchTab('dashboard'); toggleMobileMenu()"
+                        class="text-left px-4 py-3 hover:bg-slate-50 rounded-lg text-slate-700 font-medium">Complaints</button>
+                    <button onclick="switchTab('profile'); toggleMobileMenu()"
+                        class="text-left px-4 py-3 hover:bg-slate-50 rounded-lg text-slate-700 font-medium">Profile</button>
+                    <button onclick="logout()"
+                        class="text-left px-4 py-3 text-red-500 hover:bg-red-50 rounded-lg font-bold">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 overflow-hidden relative flex flex-col">
+
+        <!-- DASHBOARD TAB -->
+        <div id="view-dashboard"
+            class="h-full overflow-y-auto p-4 md:p-8 max-w-7xl mx-auto w-full transition-opacity duration-300 flex flex-col">
+
+            <div class="flex-1">
+
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                    <div
+                        class="flex flex-wrap space-x-0 md:space-x-2 gap-2 md:gap-0 bg-white p-1 rounded-lg w-full md:w-auto">
+                        <button onclick="filterComplaints('pending')" id="btn-pending"
+                            class="flex-1 md:flex-none px-4 py-2 rounded-md text-sm font-bold bg-blue-50 text-blue-600 shadow-sm transition whitespace-nowrap">Pending
+                            & In-Progress</button>
+                        <button onclick="filterComplaints('resolved')" id="btn-resolved"
+                            class="flex-1 md:flex-none px-4 py-2 rounded-md text-sm font-bold text-slate-500 hover:bg-slate-50 transition whitespace-nowrap">Resolved
+                            History</button>
+                    </div>
+                    <button onclick="loadComplaints()"
+                        class="text-blue-600 hover:underline text-sm font-medium self-end md:self-auto">Refresh
+                        Data ⟳</button>
+                </div>
+
+                <div id="complaints-container" class="space-y-4 pb-20">
+                    <!-- Complaints injected here -->
+                </div>
+            </div>
+        </div>
+        <!-- Closing the flex-1 container for content -->
+    </div>
+
+    <!-- PROFILE TAB -->
+    <div id="view-profile"
+        class="hidden h-full overflow-y-auto p-4 md:p-8 max-w-3xl mx-auto w-full transition-opacity duration-300">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">My Profile</h2>
+
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+            <form id="profile-form" class="space-y-8">
+
+                <div class="flex flex-col items-center pb-8 border-b border-slate-100">
+                    <div class="relative group cursor-pointer mb-4">
+                        <img id="p-avatar" src=""
+                            onerror="this.src='https://ui-avatars.com/api/?name=Warden&background=EFF6FF&color=1D4ED8'"
+                            class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg group-hover:opacity-75 transition">
+                        <div
+                            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <span class="bg-black/50 text-white text-xs px-2 py-1 rounded">Change Photo</span>
+                        </div>
+                        <input type="file" id="p-file" name="profileImage"
+                            class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*"
+                            onchange="previewImage(this)">
+                    </div>
+                    <h3 id="p-role-display" class="text-xl font-bold capitalize">Warden</h3>
+                    <p class="text-slate-500">Official Staff Account</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Full Name</label>
+                        <input type="text" name="name" id="p-name"
+                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500 transition"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+                        <input type="email" id="p-email" disabled
+                            class="w-full p-3 bg-slate-100 border border-slate-200 rounded-lg text-slate-500 cursor-not-allowed">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Assigned
+                            Jurisdiction</label>
+                        <input type="text" id="p-assigned" disabled
+                            class="w-full p-3 bg-slate-100 border border-slate-200 rounded-lg text-slate-500 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Role</label>
+                        <input type="text" id="p-role" disabled
+                            class="w-full p-3 bg-slate-100 border border-slate-200 rounded-lg text-slate-500 uppercase">
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit"
+                        class="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-600/20">Save
+                        Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Modal (Same as before) -->
+    <div id="resolveModal"
+        class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 transform transition-all scale-100">
+            <h3 class="text-xl font-bold mb-4">Resolve Complaint</h3>
+            <form id="resolveForm" class="space-y-4">
+                <input type="hidden" id="resolvingId">
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Resolution Notes</label>
+                    <textarea id="resNotes" required
+                        class="w-full p-3 border border-slate-200 rounded-lg outline-none focus:border-green-500"
+                        rows="3" placeholder="Describe action taken..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Proof (Optional)</label>
+                    <input type="file" id="resProof" multiple
+                        class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="document.getElementById('resolveModal').classList.add('hidden')"
+                        class="px-4 py-2 text-slate-500 hover:bg-slate-100 rounded-lg transition">Cancel</button>
+                    <button type="submit"
+                        class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-medium shadow-md shadow-green-600/20">Mark
+                        Resolved</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-slate-950 py-6 text-slate-400 text-sm text-center mt-auto relative z-10">
+        <p class="mb-2">Founded: 2010 | Campus: Urban | Director: Dr. D. V. L. N. Somayajulu</p>
+        <p>&copy; 2025 NITMN Student Feedback Portal. All rights reserved.</p>
+    </footer>
+
+    <script src="../assets/js/dashboard.js"></script>
+    <script src="../js/warden.js"></script>
+</body>
+
+</html>
