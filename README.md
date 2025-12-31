@@ -81,6 +81,17 @@ student_feedback/
     *   **Backend**: `npm start` (Runs Node server + Spawns Python Chatbot)
     *   **Frontend**: Open `index.html` or run `npx serve frontend`
 
+## 🔑 Demo Credentials
+
+Use the following credentials to test different user roles:
+
+| Role | Email | Password | Access |
+| :--- | :--- | :--- | :--- |
+| **Student** | `deepak.phulo@gmail.com` | `Deepak@123` | Lodge complaints, Chatbot |
+| **Warden** | `warden.h1@nitmn.ac.in` | `wardenpassword123` | Resolve Hostel complaints |
+| **Supervisor**| `supervisor@nitmn.ac.in` | `supervisor123` | Resolve Academic complaints |
+| **Admin** | `admin@nitmn.ac.in` | `adminpassword123` | Full Dashboard Access |
+
 ## 🤖 Chatbot
 
 The chatbot is located in `backend/ml/chatbot.py`. It uses a TF-IDF (Term Frequency-Inverse Document Frequency) model with Cosine Similarity to match user queries against a JSON knowledge base. It handles natural language queries and context awareness.
