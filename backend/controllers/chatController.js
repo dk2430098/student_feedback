@@ -46,13 +46,15 @@ const chat = async (req, res) => {
         });
 
         // Set a timeout to kill the process if it takes too long (e.g., 5 seconds)
+        // Set a timeout to kill the process if it takes too long (e.g., 30 seconds)
+        // Increased from 5s to 30s because Render Free Tier is slow to load Python libraries
         const timeoutId = setTimeout(() => {
             pythonProcess.kill();
             console.error('Python script timed out');
             if (!res.headersSent) {
-                res.status(504).json({ success: false, message: 'AI Response Timed Out' });
+                res.status(504).json({ success: false, message: 'AI Response Timed Out (Cold Start)' });
             }
-        }, 5000);
+        }, 30000);
 
     } catch (error) {
         console.error('Chat API Error:', error);
