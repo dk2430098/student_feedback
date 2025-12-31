@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
+dotenv.config();
+
 const Complaint = require('./models/Complaint');
 const User = require('./models/User');
 
-const MONGO_URI = 'mongodb+srv://dk2430098_db_user:IkOarK5abF9U6JMD@cluster0.v1zbvi2.mongodb.net/?appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URL;
 
 mongoose.connect(MONGO_URI)
     .then(async () => {

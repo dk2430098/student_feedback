@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+dotenv.config();
+
 const User = require('./models/User');
 
-// Hardcoded URI for seeding
-const MONGO_URI = 'mongodb+srv://dk2430098_db_user:IkOarK5abF9U6JMD@cluster0.v1zbvi2.mongodb.net/?appName=Cluster0';
+// Use env variable
+const MONGO_URI = process.env.MONGO_URL;
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI)
