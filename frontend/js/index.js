@@ -58,7 +58,7 @@ async function handleSubmit(event) {
 
         const data = await response.json();
 
-        if (response.ok && data.success) {
+        if (response.ok) {
             formStatus.textContent = "Thanks for your message! We'll get back to you soon.";
             formStatus.classList.remove("hidden", "text-red-500");
             formStatus.classList.add("text-green-600");
