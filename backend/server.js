@@ -36,6 +36,7 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((err) => console.log(err));
 
 // Routes
+app.get('/api/health', (req, res) => res.status(200).send('OK')); // Keep-Alive Endpoint
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/complaints', require('./routes/complaintRoutes'));
 app.use('/api/chat', require('./routes/chatRoutes'));
