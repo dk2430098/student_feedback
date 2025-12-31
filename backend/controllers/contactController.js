@@ -19,7 +19,8 @@ exports.submitContact = async (req, res) => {
 
         // Email to Admin
         const mailOptions = {
-            from: `"${name}" <${email}>`,
+            from: process.env.EMAIL_USER, // Check: Gmail requires 'from' to match authenticated user
+            replyTo: email, // Allow replying to the user
             to: process.env.EMAIL_USER, // Send to self (Admin)
             subject: `New Contact Form Message from ${name}`,
             html: `
