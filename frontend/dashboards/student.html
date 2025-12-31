@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
 </head>
 
 <body class="bg-slate-50 h-screen flex overflow-hidden text-slate-900">
@@ -29,26 +31,26 @@
                     <div class="hidden md:flex items-center space-x-2">
                         <button onclick="showTab('profile')" id="btn-profile"
                             class="px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
-                            <span>🏠</span> Dashboard
+                            <span class="material-symbols-rounded text-xl">dashboard</span> Dashboard
                         </button>
                         <button onclick="showTab('submit')" id="btn-submit"
                             class="px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
-                            <span>✍️</span> Submit
+                            <span class="material-symbols-rounded text-xl">rate_review</span> Submit
                         </button>
                         <button onclick="showTab('pending')" id="btn-pending"
                             class="px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
-                            <span>⏳</span> Pending
+                            <span class="material-symbols-rounded text-xl">pending_actions</span> Pending
                         </button>
                         <button onclick="showTab('resolved')" id="btn-resolved"
                             class="px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
-                            <span>✅</span> Resolved
+                            <span class="material-symbols-rounded text-xl">task_alt</span> Resolved
                         </button>
 
                         <div class="h-6 w-px bg-slate-300 mx-2"></div>
 
                         <button onclick="logout()"
                             class="text-slate-500 hover:text-red-500 font-medium text-sm flex items-center gap-1 transition">
-                            Logout ➔
+                            <span class="material-symbols-rounded">logout</span> Logout
                         </button>
                     </div>
 
@@ -69,24 +71,24 @@
                 class="hidden md:hidden bg-white border-t border-slate-100 px-4 pt-2 pb-4 space-y-1 shadow-lg absolute w-full left-0">
                 <button onclick="showTab('profile'); toggleMobileMenu()"
                     class="w-full text-left px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-medium flex items-center gap-3">
-                    <span>🏠</span> Dashboard
+                    <span class="material-symbols-rounded">dashboard</span> Dashboard
                 </button>
                 <button onclick="showTab('submit'); toggleMobileMenu()"
                     class="w-full text-left px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-medium flex items-center gap-3">
-                    <span>✍️</span> Submit Feedback
+                    <span class="material-symbols-rounded">rate_review</span> Submit Feedback
                 </button>
                 <button onclick="showTab('pending'); toggleMobileMenu()"
                     class="w-full text-left px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-medium flex items-center gap-3">
-                    <span>⏳</span> Pending History
+                    <span class="material-symbols-rounded">pending_actions</span> Pending History
                 </button>
                 <button onclick="showTab('resolved'); toggleMobileMenu()"
                     class="w-full text-left px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-medium flex items-center gap-3">
-                    <span>✅</span> Resolved History
+                    <span class="material-symbols-rounded">task_alt</span> Resolved History
                 </button>
                 <div class="border-t border-slate-100 my-2"></div>
                 <button onclick="logout()"
                     class="w-full text-left px-4 py-3 rounded-lg text-red-500 hover:bg-red-50 font-bold flex items-center gap-3">
-                    <span>🚪</span> Logout
+                    <span class="material-symbols-rounded">logout</span> Logout
                 </button>
             </div>
         </nav>
@@ -182,12 +184,12 @@
                             </fieldset>
                             <div class="flex justify-end pt-4 border-t border-slate-100">
                                 <button type="button" id="edit-btn" onclick="toggleEdit()"
-                                    class="bg-slate-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-800 transition shadow-lg shadow-slate-200">
-                                    Edit Profile ✏️
+                                    class="bg-slate-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-800 transition shadow-lg shadow-slate-200 flex items-center gap-2">
+                                    Edit Profile <span class="material-symbols-rounded">edit</span>
                                 </button>
                                 <button type="submit" id="save-btn"
-                                    class="hidden bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-lg shadow-green-200">
-                                    Save Changes 💾
+                                    class="hidden bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-lg shadow-green-200 flex items-center gap-2">
+                                    Save Changes <span class="material-symbols-rounded">save</span>
                                 </button>
                             </div>
                         </form>
