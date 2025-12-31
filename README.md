@@ -1,4 +1,13 @@
 # Student Feedback Portal (NIT Manipur)
+<p align="center">
+  <a href="https://student-feedback-beta.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/Live%20Demo-Visit%20App-brightgreen?style=for-the-badge&logo=vercel&logoColor=white" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/dk2430098/student_feedback" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub%20Repo-View%20Code-black?style=for-the-badge&logo=github&logoColor=white" />
+  </a>
+</p>
 
 ![NITMN Logo](./assets/logo.jpg)
 
