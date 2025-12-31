@@ -1,124 +1,165 @@
-# 🎓 Student Feedback Portal (NIT Manipur)
-<p align="center">
-  <a href="https://student-feedback-beta.vercel.app" target="_blank">
-    <img src="https://img.shields.io/badge/Live%20Demo-Visit%20App-brightgreen?style=for-the-badge&logo=vercel&logoColor=white" />
-  </a>
-  &nbsp;&nbsp;
-  <a href="https://github.com/dk2430098/student_feedback" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub%20Repo-View%20Code-black?style=for-the-badge&logo=github&logoColor=white" />
-  </a>
-</p>
+# Student Feedback Portal (NIT Manipur)
 
-
-A comprehensive feedback management system designed to bridge the gap between students and administration. This full-stack application allows students to submit complaints anonymously or officially, while providing Wardens and Admins with powerful dashboards to resolve issues efficiently.
-
-![Project Preview](frontend/assets/images/preview.png)
+A full-stack web application designed for the National Institute of Technology Manipur to streamline the process of collecting, managing, and resolving student grievances. It features distinct dashboards for Students, Wardens, and System Administrators.
 
 ---
 
-## 🚀 Features
+## 📷 Screenshots
 
-### 👨‍🎓 **Student Module**
-*   **Secure Auth**: Signup/Login with Email OTP verification.
-*   **Complaint Filing**: Submit complaints (Academics, Hostel, Mess, etc.) with **Image/Video Proofs**.
-*   **Track Status**: Real-time updates (Pending -> Resolved) with color-coded badges.
-*   **Profile Management**: Update academic details and profile picture.
-*   **AI Chatbot**: A smart assistant (Python/ML-based) to answer common queries instantly.
+### 1. Landing Page
+![Landing Page](assets/screenshots/landing_page.png)
+*(Please add screenshot here)*
 
-### 👮 **Warden/Supervisor Module**
-*   **Complaint Dashboard**: View complaints filtered by category (e.g., specific Hostel Block).
-*   **Action Center**: Mark complaints as "Resolved" and attach **Resolution Proofs** (photos of the fixed issue).
-*   **Profile**: Manage supervisor details.
+### 2. Login Portal
+![Login Portal](assets/screenshots/login.png)
+*(Please add screenshot here)*
 
-### 👑 **Admin Module**
-*   **Analytics**: Visual charts showing complaint volume and resolution rates.
-*   **User Management**: Manage Students, Wardens, and Supervisors.
-*   **Global Oversight**: Access to all complaints across the institution.
+### 3. Student Dashboard
+![Student Dashboard](assets/screenshots/student_dashboard.png)
+*(Please add screenshot here)*
 
----
+### 4. Warden/Supervisor Dashboard
+![Warden Dashboard](assets/screenshots/warden_dashboard.png)
+*(Please add screenshot here)*
 
-## 🛠️ Tech Stack & Decisions
-
-### **Backend (Node.js & Python)**
-We chose a **Hybrid Backend** to leverage the speed of Node.js for API handling and the power of Python for Machine Learning.
-*   **Node.js & Express**: Fast, non-blocking I/O for handling concurrent API requests.
-*   **MongoDB (Atlas)**: Flexible NoSQL schema, perfect for storing varied complaint data and user profiles.
-*   **Mongoose**: ODM for strict schema modeling and data validation.
-*   **Nodemailer**: Used for **OTP Generation & Email Notifications**. We chose this over third-party APIs (like Twilio) to keep costs zero for the university.
-*   **Cloudinary**: Handles **Image & Video Uploads**. It optimizes media automatically, saving bandwidth.
-*   **Python (Scikit-Learn)**: Powers the **Chatbot**. We used a TF-IDF (Term Frequency-Inverse Document Frequency) + Cosine Similarity model to match user queries with a flexible knowledge base.
-*   **Child Process**: The Node server spawns a Python process to get chatbot answers in real-time.
-
-### **Frontend (Vanilla JS + Tailwind)**
-*   **Vanilla JavaScript**: No heavy frameworks (React/Angular) to ensure **maximum performance** and fast load times on campus networks.
-*   **Tailwind CSS**: Utility-first CSS for a modern, responsive, and "Premium" glassmorphism design.
-*   **Vercel**: Chosen for frontend hosting due to its global CDN and ease of CI/CD.
+### 5. Admin Dashboard
+![Admin Dashboard](assets/screenshots/admin_dashboard.png)
+*(Please add screenshot here)*
 
 ---
 
-## 🏗️ Architecture & Implementation
+## 🔑 Demo Credentials
 
-### **1. Authentication System (OTP)**
-To prevent spam, we implemented a 2-step verification:
-1.  User enters email/password.
-2.  Backend generates a 6-digit OTP using `crypto.randomInt`, hashes it using `bcrypt`, and stores it temporarily in the DB.
-3.  `Nodemailer` sends the code via SMTP (Gmail).
-4.  Account is only created after valid OTP submission.
+Use the following credentials to explore the different roles in the system.
 
-### **2. Dynamic Configuration**
-Since the frontend (Vercel) and backend (Render) are separate:
-*   We use a `generate-config.js` script during the build process.
-*   It reads the `API_BASE_URL` from Vercel's Environment Variables and injects it into `config.js`.
-*   This allows the code to work seamlessly on `localhost` (dev) and `deployment` (prod) without changing a single line of code.
+### **1. Student**
+*You can sign up for a new account or use:*
+*   **Email:** `student@nitmn.ac.in` (Create one via Signup)
+*   **Password:** (As set during signup)
 
-### **3. The "Hybrid" Chatbot**
-Instead of a simple if-else bot, we built a Context-Aware ML Bot:
-*   **Input**: User types "Food is bad".
-*   **Processing**:
-    1.  Node.js receives the request.
-    2.  Spawns `python3 chatbot.py "Food is bad"`.
-    3.  Python loads `knowledgeBase.json`, vectorizes the text using `TfidfVectorizer`, finds the closest match using `cosine_similarity`.
-*   **Output**: "Please report this in the Mess category...".
+### **2. Warden (Hostel Management)**
+*   **Email:** `warden.h1@nitmn.ac.in` (H1 Block)
+*   **Password:** `wardenpassword123`
+    *   *Note: Includes H2, H3, H4, H5 variants.*
+
+### **3. Supervisor (General/Academic)**
+*   **Email:** `supervisor@nitmn.ac.in`
+*   **Password:** `supervisor123`
+
+### **4. System Admin**
+*   **Email:** `admin@nitmn.ac.in`
+*   **Password:** `admin123`
 
 ---
 
-## 🧗 Challenges & Solutions
+## 🛠️ Technology Stack
 
-### **1. The "Cold Start" Problem**
-*   **Problem**: Users reported "Login is slow". This was because Render's Free Tier puts the server to sleep after 15 mins of inactivity.
-*   **Solution**: We implemented a "Keep-Alive" ping and added **Loading Spinners** to all buttons (Login/Signup/OTP). This gives users immediate visual feedback that "something is happening," improving User Experience (UX) significantly.
-
-### **2. Deployment Dependencies (Python on Node)**
-*   **Problem**: The Chatbot failed in production with `ModuleNotFoundError`. Render's Node environment doesn't strictly manage Python packages.
-*   **Solution**: We wrote a custom `render-build.sh` script. It explicitly installs `npm` dependencies AND `pip install -r requirements.txt` (scikit-learn, pandas) every time the server builds.
-
-### **3. Cross-Origin Resource Sharing (CORS)**
-*   **Problem**: The Frontend (Vercel) couldn't talk to the Backend (Render) due to browser security policies.
-*   **Solution**: We configured the Express `cors` middleware to explicitly allow requests from our Vercel domain, ensuring secure but functional communication.
-
-### **4. UI Layout Bugs**
-*   **Problem**: Use of `absolute` positioning for the footer caused it to cover the Signup form on small screens.
-*   **Solution**: Refactored the entire authentication flow to use a vertical Flexbox layout (`flex-col`). The footer now sits naturally at the bottom (`mt-auto`), pushing down only when content ends.
-
----
-
-## 🚀 Setup & Installation
-
-### **Backend**
-1.  Navigate to `/backend`.
-2.  Install dependencies:
-    ```bash
-    npm install
-    pip install -r requirements.txt
-    ```
-3.  Create `.env` file with `MONGO_URL`, `JWT_SECRET`, `EMAIL_USER`, `EMAIL_PASS`, `CLOUDINARY_XXX`.
-4.  Run: `npm start`
+This project uses a modern **MERN-like** architecture (using Vanilla JS frontend for lightweight performance).
 
 ### **Frontend**
-1.  Navigate to `/frontend`.
-2.  Run: `npx serve`
-3.  Open `http://localhost:3000`.
+*   **HTML5 & CSS3**: Core structure and styling.
+*   **Tailwind CSS**: Utility-first CSS framework for rapid, responsive UI development.
+*   **Vanilla JavaScript (ES6+)**: Dynamic DOM manipulation, API fetching, and interactive logic (Modals, Tabs).
+*   **Glassmorphism Effects**: Custom backdrop-filter styles for a premium "shiny" look.
+
+### **Backend**
+*   **Node.js**: JavaScript runtime environment.
+*   **Express.js**: Web framework for handling API routes and middleware.
+*   **MongoDB**: NoSQL database for storing Users, Complaints, and OTPs.
+*   **Mongoose**: ODM library for MongoDB data modeling.
 
 ---
 
-© 2025 Deepakkumar. Deepmind-Antigravity.
+## 📦 Packages & Enhancements
+
+### **Security** 🛡️
+*   **`bcryptjs`**: Hashes passwords securely before storing them in the database.
+*   **`jsonwebtoken (JWT)`**: Handles secure user authentication and session management via tokens.
+*   **`helmet`**: Sets secure HTTP headers to protect against common web vulnerabilities.
+*   **`express-mongo-sanitize`**: Prevents MongoDB Operator Injection attacks.
+*   **`express-rate-limit`**: Limits repeated requests to public APIs (Prevents DDoS/Brute Force).
+*   **`cors`**: Manages Cross-Origin Resource Sharing.
+
+### **Enhancements & Utilities** 🚀
+*   **`multer`**: Middleware for handling `multipart/form-data` (File Uploads).
+*   **`cloudinary`**: Cloud storage service for hosting uploaded complaint images/videos.
+*   **`nodemailer`**: Sends emails for OTP verification and notifications.
+*   **`otp-generator`**: Generates secure 6-digit OTPs for email verification.
+*   **`compression`**: Compresses HTTP responses to improve load times.
+
+---
+
+## 📂 Project Structure Explained
+
+Here's a guide to understanding the codebase structure:
+
+```bash
+/student_feedback
+│
+├── /backend
+│   ├── /controllers    # Logic for handling requests (Auth, Admin, Student, Warden)
+│   │   ├── adminController.js   # Admin logic (manage staff, stats)
+│   │   ├── authController.js    # Signup, Login, OTP logic
+│   │   └── complaintController.js # CRUD operations for complaints
+│   │
+│   ├── /models         # Mongoose Database Schemas
+│   │   ├── User.js          # User schema (Student, Warden, Admin)
+│   │   └── Complaint.js     # Complaint schema (Title, Desc, Media)
+│   │
+│   ├── /routes         # API Route definitions
+│   │   ├── authRoutes.js    # /api/auth
+│   │   └── adminRoutes.js   # /api/admin
+│   │
+│   ├── server.js       # Main entry point for the Backend Server
+│   └── seedWarden.js   # Script to seed default Warden/Staff accounts
+│
+├── /frontend
+│   ├── /assets
+│   │   └── /js/dashboard.js # Shared logic for logout, auth checks
+│   │
+│   ├── /css
+│   │   └── style.css        # Global styles (Tailwind imports)
+│   │
+│   ├── /dashboards     # Dashboard HTML pages
+│   │   ├── student.html     # Student Portal UI
+│   │   ├── warden.html      # Warden/Staff Portal UI
+│   │   └── admin.html       # System Admin Portal UI
+│   │
+│   ├── /js             # Dashboard-specific Frontend Logic
+│   │   ├── student.js       # Fetches complaints, handles form submission
+│   │   ├── warden.js        # Filters complaints, handles resolution
+│   │   └── admin.js         # Loads System Stats, manages users
+│   │
+│   ├── index.html      # Landing Page
+│   └── login.html      # Login Page
+```
+
+---
+
+## 🚀 How to Run Locally
+
+1.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/dk2430098/student_feedback.git
+    cd student_feedback
+    ```
+
+2.  **Setup Backend**
+    ```bash
+    cd backend
+    npm install
+    # Create .env file with: MONGO_URL, JWT_SECRET, CLOUDINARY_*, EMAIL_*
+    npm start
+    ```
+
+3.  **Setup Frontend**
+    *   Serve the `frontend` folder using any static server (e.g., Live Server or `npx serve`).
+    *   Open `http://localhost:3000` (or your port).
+
+---
+
+## 📬 Contact & Support
+
+For issues, please file a GitHub Issue or contact the development team at `dev@nitmn.ac.in`.
+
+*(Developed by Deepak Kumar)*
