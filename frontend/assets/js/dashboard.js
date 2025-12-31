@@ -1,5 +1,3 @@
-const API_URL = 'http://localhost:5000/api';
-
 // Check Auth & Get User
 const token = localStorage.getItem('token');
 const user = JSON.parse(localStorage.getItem('user'));
