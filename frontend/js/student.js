@@ -150,10 +150,13 @@ async function loadPending() {
     try {
         const res = await fetch(`${API_URL}/complaints`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        const pending = data.data ? data.data.filter(i => i.status === 'pending') : [];
+        const allData = data.data || [];
+        updateCache(allData);
+
+        const pending = allData.filter(i => i.status === 'pending');
 
         if (pending.length === 0) {
-            container.innerHTML = '<div class="text-center py-12 text-slate-500 bg-white rounded-xl border border-slate-200">No pending requests.</div>';
+            container.innerHTML = '<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-xl border border-slate-200">No pending requests.</div>';
         } else {
             container.innerHTML = pending.map(item => renderCard(item)).join('');
         }
@@ -167,10 +170,13 @@ async function loadResolved() {
     try {
         const res = await fetch(`${API_URL}/complaints`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        const resolved = data.data ? data.data.filter(i => i.status !== 'pending') : [];
+        const allData = data.data || [];
+        updateCache(allData);
+
+        const resolved = allData.filter(i => i.status !== 'pending');
 
         if (resolved.length === 0) {
-            container.innerHTML = '<div class="text-center py-12 text-slate-500 bg-white rounded-xl border border-slate-200">No resolved history found.</div>';
+            container.innerHTML = '<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-xl border border-slate-200">No resolved history found.</div>';
         } else {
             container.innerHTML = resolved.map(item => renderCard(item)).join('');
         }
@@ -271,60 +277,207 @@ async function loadHistory() {
     } catch (err) { console.error(err); }
 }
 
+// Modal Logic
+let currentModalItem = null;
+
 function renderCard(item) {
+    const date = new Date(item.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+    const statusIcon = getStatusIcon(item.status);
+    const displayStatus = item.status === 'pending' ? 'IN-PROGRESS' : item.status.toUpperCase();
+
     return `
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <h3 class="font-bold text-lg text-slate-800">${item.title}</h3>
-                    <span class="text-xs font-semibold px-2 py-1 bg-slate-100 rounded text-slate-600 capitalize">${item.category}</span>
+        <div onclick="openModal('${item._id}')" class="group bg-white p-6 rounded-[20px] border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer h-full flex flex-col justify-between">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-start mb-5">
+                <div class="flex items-start gap-4">
+                    <!-- Icon Box -->
+                    <div class="h-12 w-12 rounded-2xl flex items-center justify-center shrink-0 bg-slate-50 border border-slate-100 text-slate-600 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors duration-300">
+                       <span class="material-symbols-rounded text-2xl">${getCategoryIcon(item.category)}</span>
+                    </div>
+                    
+                    <!-- Text Info -->
+                    <div>
+                        <h3 class="font-bold text-[17px] text-slate-800 leading-tight mb-1 line-clamp-1 group-hover:text-blue-600 transition-colors">${item.title}</h3>
+                        <div class="flex items-center gap-2 text-slate-400 text-[11px] font-semibold tracking-wide uppercase">
+                             <span>${item.category}</span>
+                             <span class="text-slate-300">•</span>
+                             <span>${date}</span>
+                        </div>
+                    </div>
                 </div>
-                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase ${getStatusColor(item.status)}">
-                    ${item.status}
+
+                <!-- Status Pill -->
+                <span class="shrink-0 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider flex items-center gap-1.5 whitespace-nowrap ${getStatusColor(item.status)}">
+                    <span class="material-symbols-rounded text-sm font-bold">${statusIcon}</span>
+                    ${displayStatus}
                 </span>
             </div>
-            <p class="text-slate-600 text-sm mb-4">${item.description}</p>
-            ${renderMedia(item.media)}
-            ${renderResolution(item)}
-            
-            <!-- Actions -->
-            ${item.status === 'pending' ? `
-            <div class="mt-4 pt-4 border-t border-slate-100 flex gap-3">
-                <button onclick="deleteComplaint('${item._id}')" class="text-xs font-semibold text-red-600 hover:text-red-700 flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                    Delete Request
-                </button>
+
+            <!--Content Body-- >
+            <div class="bg-[#F8F9FB] rounded-xl p-4 mb-5 border border-transparent group-hover:border-slate-100 transition-colors">
+                <p class="text-slate-600 text-sm leading-relaxed line-clamp-3 font-medium">${item.description}</p>
             </div>
-            ` : ''}
+
+            <!--Footer -->
+        <div class="flex justify-between items-center mt-auto pt-2">
+            <span class="text-[13px] font-bold text-slate-400 group-hover:text-blue-600 flex items-center gap-1.5 transition-colors">
+                View Details <span class="material-symbols-rounded text-lg transition-transform group-hover:translate-x-1">arrow_right_alt</span>
+            </span>
+
+            ${item.media && item.media.length > 0 ?
+            `<span class="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-100 text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
+                    <span class="material-symbols-rounded text-sm -rotate-45">attachment</span> ${item.media.length}
+                  </span>` : ''}
         </div>
-`;
+        </div >
+        `;
+}
+
+// Global cache to help modal find data
+let cachedComplaints = [];
+
+function updateCache(data) {
+    cachedComplaints = data;
+}
+
+function openModal(id) {
+    const item = cachedComplaints.find(i => i._id === id);
+    if (!item) return;
+
+    currentModalItem = item;
+    const modal = document.getElementById('complaint-modal');
+    const body = document.getElementById('modal-body');
+    const date = new Date(item.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+    body.innerHTML = `
+        <div class="mb-6">
+            <div class="flex justify-between items-start mb-4">
+                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border ${getStatusColor(item.status)}">
+                    <span class="material-symbols-rounded text-sm">${getStatusIcon(item.status)}</span>
+                    ${item.status === 'pending' ? 'In Progress' : item.status}
+                </span>
+                <span class="text-xs font-medium text-slate-400">${date}</span>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">${item.title}</h2>
+            
+            <div class="flex items-center gap-2 mb-6">
+                <span class="flex items-center gap-1 text-xs font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded border border-slate-200 capitalize">
+                    <span class="material-symbols-rounded text-sm">category</span> ${item.category}
+                </span>
+            </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 mb-6 shadow-inner">
+            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Description</h4>
+            <p class="text-slate-700 leading-relaxed whitespace-pre-wrap text-sm md:text-base">${item.description}</p>
+        </div>
+
+        ${item.media && item.media.length > 0 ? `
+        <div class="mb-6">
+            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Attachments</h4>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                ${item.media.map(f => f.type === 'image' ?
+        `<a href="${f.url}" target="_blank" class="block group relative aspect-square bg-slate-100 rounded-xl overflow-hidden border border-slate-200 hover:shadow-md transition">
+                        <img src="${f.url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition"></div>
+                     </a>` :
+        `<video src="${f.url}" controls class="w-full rounded-xl border border-slate-200 bg-black"></video>`
+    ).join('')}
+            </div>
+        </div>` : ''
+        }
+
+        ${renderResolution(item)} <!-- Re-use existing function -->
+        `;
+
+    // Update footer actions dynamically based on status
+    const footer = document.getElementById('modal-footer');
+    if (item.status === 'pending') {
+        footer.innerHTML = `
+            <button onclick="deleteComplaint('${item._id}'); closeModal();" class="px-5 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl font-bold hover:bg-red-100 transition flex items-center gap-2 text-sm">
+                <span class="material-symbols-rounded text-lg">delete</span> Delete Request
+            </button>
+            <button onclick="closeModal()" class="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-slate-700 font-bold hover:bg-slate-50 transition text-sm shadow-sm">Close</button>
+        `;
+    } else {
+        footer.innerHTML = `<button onclick="closeModal()" class="px-6 py-2.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition text-sm shadow-lg shadow-slate-200">Close</button>`;
+    }
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeModal() {
+    document.getElementById('complaint-modal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+function toggleCard(id, btn) {
+    // Deprecated in favor of Modal, leaving empty or removing
+}
+
+
+function getStatusIcon(status) {
+    if (status === 'resolved') return 'check_circle';
+    if (status === 'rejected') return 'cancel';
+    if (status === 'pending') return 'hourglass_top';
+    return 'info';
+}
+
+function getCategoryIcon(cat) {
+    if (cat === 'academic') return 'school';
+    if (cat === 'mess') return 'restaurant';
+    if (cat === 'hostel') return 'bed';
+    if (cat === 'security') return 'security';
+    return 'category'; // other
+}
+
+function getCategoryColor(cat) {
+    if (cat === 'academic') return 'bg-blue-50 text-blue-600';
+    if (cat === 'mess') return 'bg-orange-50 text-orange-600';
+    if (cat === 'hostel') return 'bg-purple-50 text-purple-600';
+    if (cat === 'security') return 'bg-red-50 text-red-600';
+    return 'bg-slate-100 text-slate-600';
 }
 
 function getStatusColor(status) {
-    if (status === 'resolved') return 'bg-green-100 text-green-700';
-    if (status === 'rejected') return 'bg-red-100 text-red-700';
-    if (status === 'pending') return 'bg-amber-100 text-amber-700';
-    return 'bg-blue-100 text-blue-700';
+    if (status === 'resolved') return 'bg-emerald-100 text-emerald-700'; // Green
+    if (status === 'rejected') return 'bg-red-100 text-red-700'; // Red
+    if (status === 'pending') return 'bg-[#D1E5FF] text-[#0055D4]'; // Specific Blue from Screenshot
+    return 'bg-slate-100 text-slate-600';
 }
 
 function renderMedia(media) {
     if (!media || media.length === 0) return '';
-    return `<div class="flex gap-2 mb-4 overflow-x-auto">${media.map(f =>
-        f.type === 'image' ? `<img src="${f.url}" class="h-20 w-20 object-cover rounded-lg border">` : `<video src="${f.url}" controls class="h-20 w-auto object-cover rounded-lg border"></video>`
-    ).join('')}</div>`;
+    return `<div class="flex gap-2 mb-4 overflow-x-auto pb-2">${media.map(f =>
+        f.type === 'image' ?
+            `<a href="${f.url}" target="_blank"><img src="${f.url}" class="h-24 w-24 object-cover rounded-xl border border-slate-200 hover:opacity-90 transition"></a>` :
+            `<video src="${f.url}" controls class="h-24 w-auto object-cover rounded-xl border border-slate-200"></video>`
+    ).join('')
+        }</div>`;
 }
 
 function renderResolution(item) {
     if (!item.resolutionNotes) return '';
     return `
-    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 text-sm">
-        <p class="font-bold text-blue-800 text-xs uppercase mb-1">Resolution Note</p>
-        <p class="text-blue-900">${item.resolutionNotes}</p>
+        <div class="bg-blue-50 p-5 rounded-xl border border-blue-100 text-sm mt-3 relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-2 opacity-10">
+            <span class="material-symbols-rounded text-6xl text-blue-900">verified</span>
+        </div>
+        <div class="flex items-center gap-2 mb-2">
+             <span class="material-symbols-rounded text-blue-600">verified_user</span>
+             <p class="font-bold text-blue-800 text-xs uppercase tracking-wide">Official Resolution</p>
+        </div>
+        <p class="text-blue-900 leading-relaxed">${item.resolutionNotes}</p>
         ${item.resolutionProof && item.resolutionProof.length > 0 ?
-            `<div class="mt-2 flex gap-2">${item.resolutionProof.map(f => `<a href="${f.url}" target="_blank" class="text-xs text-blue-600 underline">View Proof</a>`).join('')}</div>`
-            : ''}
+            `<div class="mt-3 flex gap-2">${item.resolutionProof.map(f => `<a href="${f.url}" target="_blank" class="flex items-center gap-1 text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded-lg hover:bg-blue-700 transition"><span class="material-symbols-rounded text-sm">attachment</span> View Proof</a>`).join('')}</div>`
+            : ''
+        }
     </div>
-`;
+        `;
 }
 
 // Mobile Menu Toggle

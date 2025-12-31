@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    }
+
+    #profile {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    }
+
+    .navbar img {
+    width: 40px;
+    height: 40px ;
+    border-radius: 50% ;
+    object-fit: cover ;
+    }
+
+    #forgot-password-link {
+    font-size: 16px;
+    color: #007bff;
+    cursor: pointer;
+    }
+
+    #forgot-password-link:hover {
+    text-decoration: underline;
+    }
+
+    body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 0px;
+    }
+
+    footer {
+    background-color: #0d6efd;
+    }
+    </style>
+</head>
+
+<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-primary w-full py-3 shadow-lg fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-3">
+            <!-- Left: Logo & Title -->
+            <div class="d-flex align-items-center">
+                <div id="logo" class="me-2"></div>
+                <h2 class="text-white fs-4 fw-bold text-decoration-underline m-0">
+                    NIT Manipur Student-Feedback Portal
+                </h2>
+            </div>
+        </div>
+    </nav>
+    <!-- Login Form -->
+    <div class="card p-4 shadow-lg"
+        style="max-width: 450px; width:100%; max-height: 400px;display:flex;justify-content: center;align-self:center;margin-top: 150px;">
+        <h2 class="text-center mb-5 classic-heading">Login / Sign-up</h2>
+        <form action="/user_details" method="POST">
+            <div class="mb-4">
+                <input type="text" class="form-control" placeholder="Enrollment Number" name="enrollmentNumber"
+                    required>
+            </div>
+            <div class="mb-4 relative">
+                <input type="password" id="password" class="form-control" placeholder="Password" name="password"
+                    required>
+                <span id="toggle-password" class="text-gray-500">👁️
+                </span>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login / Sign-in</button>
+        </form>
+        <div class="text-center mt-4">
+            <a href="https://student-feedback-xjx1.onrender.com/forget_password" type="button" id="forgot-password-link"
+                class="text-decoration-none cursor-pointer">Forgot Password?</a>
+        </div>
+        <div class="text-center mt-4">
+            <form action="/create_new_user" method="get">
+                <button class="btn btn-primary">Create new Account</button>
+            </form>
+        </div>
+    </div>
+    <footer class="text-center text-white py-3 w-100 mt-auto bg-primary">
+        <p>&copy; 2025 NIT Manipur - All Rights Reserved</p>
+    </footer>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const passwordField = document.getElementById("password");
+        const togglePassword = document.getElementById("toggle-password");
+        // Toggle password visibility function
+        function toggleVisibility(inputField, toggleIcon) {
+            if (inputField.type === "password") {
+                inputField.type = "text";
+                toggleIcon.textContent = "🔒";
+            } else {
+                inputField.type = "password";
+                toggleIcon.textContent = "👁️";
+            }
+        }
+        // Add event listener for toggle
+        togglePassword.addEventListener("click", function () {
+            toggleVisibility(passwordField, togglePassword);
+        });
+    </script>
+</body>
+
+</html>

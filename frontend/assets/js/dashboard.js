@@ -40,9 +40,11 @@ function renderSidebar() {
 
 // Logout
 function logout() {
+    console.log('Logging out...');
     localStorage.clear();
     window.location.href = '../login.html';
 }
+window.logout = logout;
 
 // Setup
 renderSidebar();
