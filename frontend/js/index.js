@@ -28,8 +28,8 @@ const submitBtn = document.getElementById("submitBtn");
 
 async function handleSubmit(event) {
     event.preventDefault();
-    // Use Backend API Proxy instead of direct Formspree
-    const apiEndpoint = `${config.API_BASE_URL}/api/contact`;
+    // Use Formspree (Direct Submission) instead of Backend API
+    const apiEndpoint = form.action;
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
