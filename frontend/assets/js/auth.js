@@ -74,6 +74,14 @@ if (signupForm) {
         const submitBtn = signupForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerText; // Use innerText to grab text only
 
+        // Password Validation
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            errorMsg.textContent = "Password must be at least 8 chars, include 1 uppercase, 1 number & 1 special char.";
+            errorMsg.classList.remove('hidden');
+            return;
+        }
+
         setLoading(submitBtn, true);
         errorMsg.classList.add('hidden');
 
