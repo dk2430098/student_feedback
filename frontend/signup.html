@@ -10,113 +10,117 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+<body class="bg-slate-50 min-h-screen flex flex-col font-sans text-slate-900">
 
-    <div
-        class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[500px]">
-
-        <!-- Left Side: Visual (Hidden on mobile) -->
+    <div class="flex-grow flex items-center justify-center p-4 w-full">
         <div
-            class="hidden md:flex md:w-1/2 bg-blue-900 text-white p-12 flex-col justify-between relative overflow-hidden order-last md:order-first">
-            <div class="absolute inset-0 z-0">
-                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop"
-                    class="w-full h-full object-cover opacity-20">
-                <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/90 to-blue-900/90"></div>
-            </div>
+            class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[500px]">
 
-            <div class="relative z-10">
-                <div class="flex items-center gap-3 mb-8">
-                    <img src="assets/images/nitmn_logo.jpg" alt="NITMN Logo" class="h-10 w-auto bg-white rounded p-1">
-                    <span class="font-bold text-xl tracking-tight">NITMN Feedback</span>
-                </div>
-                <h2 class="text-4xl font-bold mb-4">Join the Community</h2>
-                <p class="text-indigo-200">Register as a student to submit complaints and track their status in
-                    real-time.</p>
-            </div>
-
-            <div class="relative z-10 text-sm text-indigo-300">
-                &copy; 2025 NIT Manipur.
-            </div>
-        </div>
-
-        <!-- Right Side: Form -->
-        <div class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
-            <div class="mb-6">
-                <h3 class="text-2xl font-bold text-slate-900">Create Account</h3>
-                <p class="text-slate-500">Student Registration</p>
-            </div>
-
-            <!-- Signup Form -->
-            <form id="signupForm" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                    <input type="text" id="name" required placeholder="John Doe"
-                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
-                    <input type="email" id="email" required placeholder="student@nitmn.ac.in"
-                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
-                    <input type="password" id="password" required placeholder="Create a password"
-                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none">
+            <!-- Left Side: Visual (Hidden on mobile) -->
+            <div
+                class="hidden md:flex md:w-1/2 bg-blue-900 text-white p-12 flex-col justify-between relative overflow-hidden order-last md:order-first">
+                <div class="absolute inset-0 z-0">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop"
+                        class="w-full h-full object-cover opacity-20">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/90 to-blue-900/90"></div>
                 </div>
 
-                <div id="signupError" class="text-red-500 text-sm hidden"></div>
-
-                <button type="submit"
-                    class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transform hover:-translate-y-0.5 transition shadow-lg shadow-blue-600/30">
-                    Get OTP
-                </button>
-            </form>
-
-            <!-- OTP Form -->
-            <form id="otpForm" class="space-y-6 hidden w-full">
-                <div
-                    class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg text-sm flex items-start gap-2">
-                    <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <div>
-                        <strong>OTP Sent!</strong><br>
-                        Check your email. (Demo OTP: 123456)
+                <div class="relative z-10">
+                    <div class="flex items-center gap-3 mb-8">
+                        <img src="assets/images/nitmn_logo.jpg" alt="NITMN Logo"
+                            class="h-10 w-auto bg-white rounded p-1">
+                        <span class="font-bold text-xl tracking-tight">NITMN Feedback</span>
                     </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1 text-center">Verification Code</label>
-                    <input type="text" id="otp" required placeholder="• • • • • •" maxlength="6"
-                        class="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition outline-none text-center tracking-[0.5em] text-2xl font-bold text-slate-800">
+                    <h2 class="text-4xl font-bold mb-4">Join the Community</h2>
+                    <p class="text-indigo-200">Register as a student to submit complaints and track their status in
+                        real-time.</p>
                 </div>
 
-                <div id="otpError" class="text-red-500 text-sm hidden text-center"></div>
-
-                <button type="submit"
-                    class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transform hover:-translate-y-0.5 transition shadow-lg shadow-green-600/30">
-                    Verify & Register
-                </button>
-            </form>
-
-            <div class="mt-8 text-center text-sm text-slate-600">
-                Already have an account? <a href="login.html" class="text-blue-600 font-bold hover:underline">Sign
-                    in</a>
+                <div class="relative z-10 text-sm text-indigo-300">
+                    &copy; 2025 NIT Manipur.
+                </div>
             </div>
-            <div class="mt-8 text-center">
-                <a href="index.html"
-                    class="text-slate-400 hover:text-slate-600 text-sm flex items-center justify-center gap-1 transition">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Back to Home
-                </a>
+
+            <!-- Right Side: Form -->
+            <div class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-slate-900">Create Account</h3>
+                    <p class="text-slate-500">Student Registration</p>
+                </div>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                        <input type="text" id="name" required placeholder="John Doe"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+                        <input type="email" id="email" required placeholder="student@nitmn.ac.in"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                        <input type="password" id="password" required placeholder="Create a password"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none">
+                    </div>
+
+                    <div id="signupError" class="text-red-500 text-sm hidden"></div>
+
+                    <button type="submit"
+                        class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transform hover:-translate-y-0.5 transition shadow-lg shadow-blue-600/30">
+                        Get OTP
+                    </button>
+                </form>
+
+                <!-- OTP Form -->
+                <form id="otpForm" class="space-y-6 hidden w-full">
+                    <div
+                        class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg text-sm flex items-start gap-2">
+                        <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <strong>OTP Sent!</strong><br>
+                            Check your email. (Demo OTP: 123456)
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1 text-center">Verification
+                            Code</label>
+                        <input type="text" id="otp" required placeholder="• • • • • •" maxlength="6"
+                            class="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition outline-none text-center tracking-[0.5em] text-2xl font-bold text-slate-800">
+                    </div>
+
+                    <div id="otpError" class="text-red-500 text-sm hidden text-center"></div>
+
+                    <button type="submit"
+                        class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transform hover:-translate-y-0.5 transition shadow-lg shadow-green-600/30">
+                        Verify & Register
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center text-sm text-slate-600">
+                    Already have an account? <a href="login.html" class="text-blue-600 font-bold hover:underline">Sign
+                        in</a>
+                </div>
+                <div class="mt-8 text-center">
+                    <a href="index.html"
+                        class="text-slate-400 hover:text-slate-600 text-sm flex items-center justify-center gap-1 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Back to Home
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
-    <footer class="absolute bottom-0 w-full bg-slate-950 py-4 text-slate-400 text-xs text-center hidden md:block">
+    <footer class="w-full bg-slate-950 py-4 text-slate-400 text-xs text-center hidden md:block mt-auto">
         <p>Founded: 2010 | Campus: Urban | Director: Dr. D. V. L. N. Somayajulu</p>
         <p>&copy; 2025 NITMN Student Feedback Portal.</p>
     </footer>
