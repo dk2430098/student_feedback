@@ -1,7 +1,6 @@
 node_modules/
 .env
-*.jpg
-*.jpeg
-*.png
-*.zip
-*.mp4
+# Images (Allowed)
+# *.jpg
+# *.jpeg
+# *.png
