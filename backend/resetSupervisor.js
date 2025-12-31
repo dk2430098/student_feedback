@@ -16,7 +16,7 @@ mongoose.connect(MONGO_URI)
             user = await User.create({
                 name: 'Student Supervisor',
                 email: email,
-                password: 'supervisor123',
+                password: process.env.SUPERVISOR_PASSWORD || 'supervisor123',
                 role: 'supervisor',
                 assignedHostel: 'All',
                 isVerified: true
@@ -25,9 +25,9 @@ mongoose.connect(MONGO_URI)
         } else {
             console.log(`Found Supervisor: ${user.email}`);
             // Manually set password again to trigger hash
-            user.password = 'supervisor123';
+            user.password = process.env.SUPERVISOR_PASSWORD || 'supervisor123';
             await user.save();
-            console.log('Password reset successfully to: supervisor123');
+            console.log('Password reset successfully.');
         }
 
         console.log('User Role:', user.role);

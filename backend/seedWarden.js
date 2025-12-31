@@ -23,7 +23,7 @@ mongoose.connect(MONGO_URI)
                 await User.create({
                     name: `Warden ${block}`,
                     email: email,
-                    password: 'wardenpassword123',
+                    password: process.env.WARDEN_PASSWORD || 'wardenpassword123',
                     role: 'warden',
                     assignedHostel: block,
                     isVerified: true
@@ -42,7 +42,7 @@ mongoose.connect(MONGO_URI)
             await User.create({
                 name: 'Student Supervisor',
                 email: supEmail,
-                password: 'supervisor123',
+                password: process.env.SUPERVISOR_PASSWORD || 'supervisor123',
                 role: 'supervisor',
                 assignedHostel: 'All',
                 isVerified: true
@@ -53,8 +53,8 @@ mongoose.connect(MONGO_URI)
         }
 
         console.log('--- Account Setup Complete ---');
-        console.log('Warden Passwords: wardenpassword123');
-        console.log('Supervisor Password: supervisor123');
+        console.log('Warden Passwords: Check Environment Variables');
+        console.log('Supervisor Password: Check Environment Variables');
 
         process.exit();
     })

@@ -16,7 +16,7 @@ mongoose.connect(MONGO_URI)
             user = await User.create({
                 name: 'System Administrator',
                 email: email,
-                password: 'adminpassword123',
+                password: process.env.ADMIN_PASSWORD || 'adminpassword123',
                 role: 'admin',
                 assignedHostel: 'All',
                 isVerified: true
@@ -25,9 +25,9 @@ mongoose.connect(MONGO_URI)
         } else {
             console.log(`Found Admin: ${user.email}`);
             // Force reset password to be sure
-            user.password = 'adminpassword123';
+            user.password = process.env.ADMIN_PASSWORD || 'adminpassword123';
             await user.save();
-            console.log('Admin password reset to: adminpassword123');
+            console.log('Admin password reset.');
         }
 
         process.exit();
