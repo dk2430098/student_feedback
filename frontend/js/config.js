@@ -1,7 +1,6 @@
 const config = {
-    // Change this to your Render Backend URL after deployment
-    // e.g., "https://student-feedback-backend.onrender.com"
-    API_BASE_URL: "http://localhost:5000"
+    // Render Backend URL
+    API_BASE_URL: "https://student-feedback-backend-ph0e.onrender.com"
 };
 
 // Export for usage if using modules, but for vanilla we just load this first in HTML
