@@ -11,7 +11,7 @@ A full-stack web application designed for the National Institute of Technology M
 *(Please add screenshot here)*
 
 ### 2. Login Portal
-![Login Portal](assets/screenshots/login.png)
+![Login Portal](assets/screenshots/login_page.png)
 *(Please add screenshot here)*
 
 ### 3. Student Dashboard
@@ -26,6 +26,8 @@ A full-stack web application designed for the National Institute of Technology M
 ![Admin Dashboard](assets/screenshots/admin_dashboard.png)
 *(Please add screenshot here)*
 
+*The `assets/screenshots` folder has been created. Please place your screenshots here.*
+
 ---
 
 ## 🔑 Demo Credentials
@@ -33,14 +35,15 @@ A full-stack web application designed for the National Institute of Technology M
 Use the following credentials to explore the different roles in the system.
 
 ### **1. Student**
-*You can sign up for a new account or use:*
-*   **Email:** `student@nitmn.ac.in` (Create one via Signup)
-*   **Password:** (As set during signup)
+*   **Email:** `dk2430098@gmail.com`
+*   **Password:** `Deepak@123`
+    *(Please ensure this user is registered via the Signup page if it doesn't exist)*
+
+*You can also sign up for a new account.*
 
 ### **2. Warden (Hostel Management)**
-*   **Email:** `warden.h1@nitmn.ac.in` (H1 Block)
+*   **Email:** `warden.h1@nitmn.ac.in` (For H1 Block, and similarly `h2`, `h3`, `h4`, `h5` variants)
 *   **Password:** `wardenpassword123`
-    *   *Note: Includes H2, H3, H4, H5 variants.*
 
 ### **3. Supervisor (General/Academic)**
 *   **Email:** `supervisor@nitmn.ac.in`
@@ -48,7 +51,7 @@ Use the following credentials to explore the different roles in the system.
 
 ### **4. System Admin**
 *   **Email:** `admin@nitmn.ac.in`
-*   **Password:** `admin123`
+*   **Password:** `adminpassword123`
 
 ---
 
@@ -148,7 +151,7 @@ Here's a guide to understanding the codebase structure:
     ```bash
     cd backend
     npm install
-    # Create .env file with: MONGO_URL, JWT_SECRET, CLOUDINARY_*, EMAIL_*
+    # Create .env file with: MONGO_URL, JWT_SECRET, CLOUDINARY_*, EMAIL_*, WARDEN_PASSWORD, SUPERVISOR_PASSWORD, ADMIN_PASSWORD etc.
     npm start
     ```
 
