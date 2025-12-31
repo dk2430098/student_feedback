@@ -1,0 +1,10 @@
+{
+    "name": "student-feedback-frontend",
+    "version": "1.0.0",
+    "description": "Frontend for Student Feedback Portal",
+    "scripts": {
+        "build": "node generate-config.js"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+}
