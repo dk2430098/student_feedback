@@ -7,6 +7,10 @@ exports.submitContact = async (req, res) => {
         return res.status(400).json({ success: false, message: 'Please provide name, email, and message' });
     }
 
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        return res.status(500).json({ success: false, message: 'Server Config Error: EMAIL_USER or EMAIL_PASS is missing from Environment Variables' });
+    }
+
     try {
         // Create Transporter
         const transporter = nodemailer.createTransport({
