@@ -29,7 +29,8 @@ const submitBtn = document.getElementById("submitBtn");
 async function handleSubmit(event) {
     event.preventDefault();
     // Use Formspree (Direct Submission) instead of Backend API
-    const apiEndpoint = form.action;
+    // Use Dynamic Env Var if available, else fallback to hardcoded action
+    const apiEndpoint = config.FORMSPREE_URL || form.action;
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
