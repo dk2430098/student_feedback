@@ -8,6 +8,9 @@ dotenv.config();
 
 const app = express();
 
+// Trust proxy (Required for Render/Heroku/Vercel)
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(helmet());
 app.use(cors()); // Allow all origins for now to simplify client-server dev
