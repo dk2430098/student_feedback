@@ -1,4 +1,5 @@
-# Student Feedback Portal (NIT Manipur)
+# <img src="./assets/logo.jpg" height="45" style="vertical-align: bottom;"> Student Feedback Portal (NIT Manipur)
+
 <p align="center">
   <a href="https://student-feedback-beta.vercel.app" target="_blank">
     <img src="https://img.shields.io/badge/Live%20Demo-Visit%20App-brightgreen?style=for-the-badge&logo=vercel&logoColor=white" />
@@ -8,8 +9,6 @@
     <img src="https://img.shields.io/badge/GitHub%20Repo-View%20Code-black?style=for-the-badge&logo=github&logoColor=white" />
   </a>
 </p>
-
-![NITMN Logo](./assets/logo.jpg)
 
 A digital grievance redressal system designed effectively for **NIT Manipur**. This platform bridges the gap between students and the administration by providing a transparent, fast, and accountable way to resolve campus issues.
 
