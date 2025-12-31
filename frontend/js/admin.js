@@ -1,4 +1,5 @@
 // Init Globals
+const API_URL = `${config.API_BASE_URL}/api`;
 let allComplaints = [];
 let allStaff = [];
 

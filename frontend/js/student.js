@@ -1,4 +1,5 @@
 // Initialize
+const API_URL = `${config.API_BASE_URL}/api`;
 loadProfile();
 showTab('profile'); // Default to Profile
 
