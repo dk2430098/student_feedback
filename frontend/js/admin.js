@@ -20,12 +20,12 @@ function switchTab(tab) {
 
     if (tab === 'complaints') {
         viewC.classList.remove('hidden'); viewU.classList.add('hidden');
-        btnC.className = 'px-4 py-1.5 rounded-md text-sm font-bold bg-white text-indigo-900 shadow transition';
-        btnU.className = 'px-4 py-1.5 rounded-md text-sm font-bold text-indigo-300 hover:text-white transition';
+        btnC.className = 'px-5 py-2 rounded-lg text-sm font-bold bg-white text-slate-800 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-black/5';
+        btnU.className = 'px-5 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-white/60 hover:text-indigo-600 transition-all duration-200';
     } else {
         viewC.classList.add('hidden'); viewU.classList.remove('hidden');
-        btnU.className = 'px-4 py-1.5 rounded-md text-sm font-bold bg-white text-indigo-900 shadow transition';
-        btnC.className = 'px-4 py-1.5 rounded-md text-sm font-bold text-indigo-300 hover:text-white transition';
+        btnU.className = 'px-5 py-2 rounded-lg text-sm font-bold bg-white text-slate-800 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-black/5';
+        btnC.className = 'px-5 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-white/60 hover:text-indigo-600 transition-all duration-200';
     }
 }
 
@@ -100,8 +100,24 @@ function renderStats() {
     const total = allComplaints.length;
     const pending = allComplaints.filter(c => c.status === 'pending').length;
     const resolved = allComplaints.filter(c => c.status === 'resolved').length;
-    const card = (l, v, c) => `<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm"><p class="text-xs font-bold text-slate-400 uppercase">${l}</p><p class="text-3xl font-bold text-${c}-600">${v}</p></div>`;
-    document.getElementById('stats-container').innerHTML = `${card('Total', total, 'indigo')} ${card('Pending', pending, 'amber')} ${card('Resolved', resolved, 'green')}`;
+    const card = (label, value, color) => `
+        <div class="bg-white/80 backdrop-blur-xl p-6 rounded-2xl border border-white/60 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 flex flex-col items-start gap-1 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+               <div class="w-16 h-16 rounded-full bg-${color}-500 blur-xl"></div>
+            </div>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest relative z-10">${label}</p>
+            <p class="text-4xl font-black text-slate-800 relative z-10 tracking-tight">${value}</p>
+            <div class="w-full h-1 bg-slate-100 rounded-full mt-2 overflow-hidden">
+                <div class="h-full bg-${color}-500 w-2/3 rounded-full opacity-80"></div>
+            </div>
+        </div>`;
+
+    document.getElementById('stats-container').innerHTML = `
+        ${card('Total Filed', total, 'indigo')} 
+        ${card('Pending Review', pending, 'amber')} 
+        ${card('Successfully Resolved', resolved, 'green')}
+        ${card('Active Staff', allStaff.length, 'blue')}
+    `;
 }
 
 // Complaint Detail Logic
