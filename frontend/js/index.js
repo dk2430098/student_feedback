@@ -32,6 +32,13 @@ async function handleSubmit(event) {
     // Use Dynamic Env Var if available, else fallback to hardcoded action
     const apiEndpoint = config.FORMSPREE_URL || form.action;
 
+    if (!apiEndpoint) {
+        formStatus.textContent = "Error: Formspree URL not configured. Please check Vercel settings.";
+        formStatus.classList.remove("hidden", "text-green-600");
+        formStatus.classList.add("text-red-500");
+        return;
+    }
+
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
     formStatus.classList.add("hidden");
