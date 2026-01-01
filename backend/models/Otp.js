@@ -24,17 +24,13 @@ const otpSchema = new mongoose.Schema({
 // Function to send emails
 async function sendVerificationEmail(email, otp) {
     try {
-        console.log(`DEV_OTP: ${otp} for ${email}`); // For Development Testing
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+        console.log(`DEV_OTP: ${otp} for ${email}`);
 
-        const mailResponse = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        const { Resend } = require('resend');
+        const resend = new Resend(process.env.RESEND_API_KEY);
+
+        const data = await resend.emails.send({
+            from: 'onboarding@resend.dev',
             to: email,
             subject: 'Verification Code - Student Feedback System',
             html: `
@@ -44,11 +40,12 @@ async function sendVerificationEmail(email, otp) {
                     <h1 style="color: #4F46E5;">${otp}</h1>
                     <p>This code expires in 10 minutes.</p>
                 </div>
-            `,
+            `
         });
-        console.log("Email sent successfully: ", mailResponse.messageId);
+
+        console.log("Email sent successfully (Resend): ", data);
     } catch (error) {
-        console.log("Error occurred while sending email: ", error);
+        console.log("Error occurred while sending email (Resend): ", error);
         throw error;
     }
 }
