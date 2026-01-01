@@ -43,6 +43,11 @@ async function sendVerificationEmail(email, otp) {
             `
         });
 
+        if (data.error) {
+            console.error("Resend API Error:", data.error);
+            throw new Error(data.error.message);
+        }
+
         console.log("Email sent successfully (Resend): ", data);
     } catch (error) {
         console.log("Error occurred while sending email (Resend): ", error);
