@@ -30,7 +30,7 @@ async function sendVerificationEmail(email, otp) {
         const resend = new Resend(process.env.RESEND_API_KEY);
 
         const data = await resend.emails.send({
-            from: 'onboarding@resend.dev',
+            from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
             to: email,
             subject: 'Verification Code - Student Feedback System',
             html: `
