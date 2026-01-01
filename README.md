@@ -72,10 +72,10 @@ The system is divided into **4 Distinct Roles**, each with specific permissions 
 
 We utilize **two separate email channels** to optimize performance and security:
 
-1.  **Transactional Emails (Resend API)**
+1.  **Transactional Emails (Nodemailer + Gmail SMTP)**
     *   **Purpose**: Critical System functions like **New Account Verification (OTP)** and internal notifications.
-    *   **Why**: We use **Resend** for reliable, developer-friendly email delivery (replacing legacy SMTP).
-    *   **Flow**: User -> Backend API -> Resend API -> User Inbox.
+    *   **Why**: We need full control and security for sending OTPs.
+    *   **Flow**: User -> Backend API -> Nodemailer -> Gmail App Server -> User Inbox.
 
 2.  **Public Contact Form (Formspree)**
     *   **Purpose**: Handling public "Send a Message" queries from the Landing Page (before login).
