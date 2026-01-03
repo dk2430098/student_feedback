@@ -30,6 +30,13 @@ window.clerkReady = false;
 
 window.openSignIn = (options = {}) => {
     if (window.clerkReady && window.clerk) {
+        // If already signed in, don't open modal, just redirect
+        if (window.clerk.user) {
+            console.log('User already signed in. Redirecting...');
+            handleSignedInUser(window.clerk);
+            return;
+        }
+
         const signInProps = {};
 
         if (options.email) {
@@ -46,6 +53,13 @@ window.openSignIn = (options = {}) => {
 
 window.openSignUp = (options = {}) => {
     if (window.clerkReady && window.clerk) {
+        // If already signed in, don't open modal, just redirect
+        if (window.clerk.user) {
+            console.log('User already signed in. Redirecting...');
+            handleSignedInUser(window.clerk);
+            return;
+        }
+
         // Map custom form fields to Clerk's expected format
         const splitName = (options.name || '').split(' ');
         const firstName = splitName[0] || '';
