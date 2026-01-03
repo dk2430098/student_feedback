@@ -144,10 +144,6 @@ The project relies on these specific highly reliable packages:
 *   **Email:** `kumardeepak94262@gmail.com`
 *   **Password:** `NITMN@STUDENTFEEDBACK`
 
-### **Chief Warden**
-*   **Email:** `deepakku906043@gmail.com`
-*   **Password:** `NITMN@STUDENTFEEDBACK`
-
 ---
 
 ## 📬 Contact Support
