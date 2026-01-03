@@ -130,19 +130,23 @@ The project relies on these specific highly reliable packages:
 
 ### **Student**
 *   **Email:** `dk2430098@gmail.com`
-*   **Password:** `Deepak@123`
+*   **Password:** `NITMN@STUDENTFEEDBACK`
+
+### **Admin**
+*   **Email:** `deepakkumar@nitmanipur.ac.in`
+*   **Password:** `NITMN@STUDENTFEEDBACK`
+
+### **Student Supervisor**
+*   **Email:** `tamparayogesh@gmail.com`
+*   **Password:** `NITMN@STUDENTFEEDBACK`
 
 ### **Warden (Hostel H1)**
-*   **Email:** `warden.h1@nitmn.ac.in`
-*   **Password:** `wardenpassword123`
+*   **Email:** `kumardeepak94262@gmail.com`
+*   **Password:** `NITMN@STUDENTFEEDBACK`
 
-### **Supervisor (Academic)**
-*   **Email:** `supervisor@nitmn.ac.in`
-*   **Password:** `supervisor123`
-
-### **System Admin**
-*   **Email:** `admin@nitmn.ac.in`
-*   **Password:** `adminpassword123`
+### **Chief Warden**
+*   **Email:** `deepakku906043@gmail.com`
+*   **Password:** `NITMN@STUDENTFEEDBACK`
 
 ---
 
