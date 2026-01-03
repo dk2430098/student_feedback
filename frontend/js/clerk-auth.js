@@ -1,5 +1,17 @@
 // Clerk Authentication Logic
-const clerkPubKey = window.config ? window.config.CLERK_PUBLISHABLE_KEY : null;
+
+// Fallback: Ensure window.config exists even if config.js failed to load
+if (!window.config) {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    window.config = {
+        API_BASE_URL: isLocal ? "http://localhost:5000" : "https://student-feedback-backend-ph0e.onrender.com",
+        FORMSPREE_URL: "",
+        CLERK_PUBLISHABLE_KEY: "pk_test_Z29yZ2VvdXMtbW9ua2Zpc2gtMzQuY2xlcmsuYWNjb3VudHMuZGV2JA"
+    };
+    console.log('⚠️ Config loaded via fallback in clerk-auth.js');
+}
+
+const clerkPubKey = window.config.CLERK_PUBLISHABLE_KEY;
 
 if (!clerkPubKey) {
     console.error('Clerk Publishable Key is missing via window.config');
