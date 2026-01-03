@@ -61,6 +61,11 @@ exports.updateStaff = async (req, res) => {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
 
+        // Fix for legacy users missing clerkId
+        if (!user.clerkId) {
+            user.clerkId = `invitation_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        }
+
         // Update basic fields
         if (name) user.name = name;
         if (email && email !== user.email) {
