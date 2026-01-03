@@ -1,9 +1,10 @@
 // Clerk Authentication Logic
-const clerkPubKey = config.CLERK_PUBLISHABLE_KEY;
+const clerkPubKey = window.config ? window.config.CLERK_PUBLISHABLE_KEY : null;
 
 if (!clerkPubKey) {
-    console.error('Clerk Publishable Key is missing in config.js');
-    alert('Clerk Key Missing! Check Console.');
+    console.error('Clerk Publishable Key is missing via window.config');
+    console.log('window.config object:', window.config); // Debug log
+    alert('Clerk Key Missing! Check Console for details.');
 }
 
 const script = document.createElement('script');
@@ -102,7 +103,7 @@ async function handleSignedInUser(clerk) {
 
     // 2. Sync with Backend
     try {
-        const res = await fetch(`${config.API_BASE_URL}/api/auth/sync`, {
+        const res = await fetch(`${window.config.API_BASE_URL}/api/auth/sync`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
