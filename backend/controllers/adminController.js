@@ -63,7 +63,13 @@ exports.updateStaff = async (req, res) => {
 
         // Update basic fields
         if (name) user.name = name;
-        if (email) user.email = email;
+        if (email && email !== user.email) {
+            const emailExists = await User.findOne({ email });
+            if (emailExists) {
+                return res.status(400).json({ success: false, message: 'Email already in use by another user' });
+            }
+            user.email = email;
+        }
         // Password updates handled by Clerk exclusively
 
         // Update Role & Jurisdiction
