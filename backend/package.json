@@ -8,8 +8,8 @@
         "dev": "nodemon server.js"
     },
     "dependencies": {
+        "@clerk/clerk-sdk-node": "^4.13.23",
         "axios": "^1.13.2",
-        "bcrypt": "^5.1.1",
         "cloudinary": "^1.41.3",
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
@@ -19,12 +19,10 @@
         "express-mongo-sanitize": "^2.2.0",
         "express-rate-limit": "^8.2.1",
         "helmet": "^7.1.0",
-        "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.3.4",
         "multer": "^2.0.2",
         "multer-storage-cloudinary": "^4.0.0",
-        "nodemailer": "^6.9.13",
-        "otp-generator": "^4.0.1",
+        "nodemailer": "^7.0.12",
         "resend": "^6.6.0"
     },
     "devDependencies": {

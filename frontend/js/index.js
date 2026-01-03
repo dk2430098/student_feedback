@@ -28,9 +28,8 @@ const submitBtn = document.getElementById("submitBtn");
 
 async function handleSubmit(event) {
     event.preventDefault();
-    // Use Formspree (Direct Submission) instead of Backend API
-    // Use Dynamic Env Var if available, else fallback to hardcoded action
-    const apiEndpoint = config.FORMSPREE_URL || form.action;
+    // Use Formspree (Direct Submission) if configured, otherwise use Backend API
+    const apiEndpoint = config.FORMSPREE_URL || `${config.API_BASE_URL}/api/contact`;
 
     if (!apiEndpoint) {
         formStatus.textContent = "Error: Formspree URL not configured. Please check Vercel settings.";

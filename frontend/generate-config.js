@@ -6,11 +6,14 @@ const configPath = path.join(__dirname, 'js', 'config.js');
 // Default to localhost if env var not set
 const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:5000';
 const formspreeUrl = process.env.FORMSPREE_URL || '';
+// User provided key or read from env
+const clerkPublishableKey = process.env.VITE_CLERK_PUBLISHABLE_KEY || '';
 
 const configContent = `const config = {
     // Generated from Environment Variable
     API_BASE_URL: "${apiBaseUrl}",
-    FORMSPREE_URL: "${formspreeUrl}"
+    FORMSPREE_URL: "${formspreeUrl}",
+    CLERK_PUBLISHABLE_KEY: "${clerkPublishableKey}"
 };
 
 // Export for usage if using modules
@@ -19,3 +22,4 @@ if (typeof module !== 'undefined') module.exports = config;
 
 fs.writeFileSync(configPath, configContent);
 console.log(`Generated config.js with API_BASE_URL: ${apiBaseUrl}`);
+console.log(`Included Clerk Key: ${clerkPublishableKey ? 'Yes' : 'No'}`);

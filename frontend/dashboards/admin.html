@@ -165,7 +165,7 @@
                         <p class="text-slate-500 text-sm">Manage Wardens, Supervisors, and permissions.</p>
                     </div>
                     <button onclick="openAddUser()"
-                        class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-600/20 transition flex items-center gap-2">
+                        class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-600/20 transition flex items-center gap-2 ripple-btn">
                         <span>+</span> Add New Staff
                     </button>
                 </div>
@@ -375,15 +375,7 @@
                     </div>
                 </div>
 
-                <div id="password-group">
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Password</label>
-                    <input type="text" id="u-pass" placeholder="Enter new password to reset (Optional)"
-                        class="w-full p-3 border border-slate-200 rounded-lg bg-slate-50 outline-none focus:ring-2 focus:ring-indigo-500">
-                    <p class="text-xs text-slate-400 mt-1" id="pass-hint">Leave empty to keep current. New
-                        accounts
-                        get
-                        auto-generated password via email.</p>
-                </div>
+                <!-- Password removed: Handled by Clerk -->
 
                 <div class="flex justify-end gap-3 pt-4">
                     <button type="button" onclick="closeUserModal()"
@@ -419,6 +411,7 @@
     </footer>
 
     <script src="../js/config.js"></script>
+    <script src="../js/clerk-auth.js"></script>
     <script src="../assets/js/dashboard.js"></script>
     <script src="../js/admin.js"></script>
 </body>

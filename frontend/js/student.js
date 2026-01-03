@@ -1,7 +1,10 @@
 // Initialize
 const API_URL = `${config.API_BASE_URL}/api`;
-loadProfile();
-showTab('profile'); // Default to Profile
+// Initialize via dashboard.js
+window.loadData = async function () {
+    await loadProfile();
+    showTab('profile');
+};
 
 // Branch Logic
 const branches = {
@@ -40,6 +43,7 @@ function toggleEdit() {
 
 async function loadProfile() {
     try {
+        const token = await window.clerk.session.getToken();
         const res = await fetch(`${API_URL}/auth/me`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
 
@@ -81,6 +85,7 @@ document.getElementById('profile-form').addEventListener('submit', async (e) => 
     }
 
     try {
+        const token = await window.clerk.session.getToken();
         const res = await fetch(`${API_URL}/auth/profile`, {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}` },
@@ -148,6 +153,7 @@ async function loadPending() {
     container.innerHTML = '<div class="text-center text-slate-400">Loading...</div>';
 
     try {
+        const token = await window.clerk.session.getToken();
         const res = await fetch(`${API_URL}/complaints`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         const allData = data.data || [];
@@ -168,6 +174,7 @@ async function loadResolved() {
     container.innerHTML = '<div class="text-center text-slate-400">Loading...</div>';
 
     try {
+        const token = await window.clerk.session.getToken();
         const res = await fetch(`${API_URL}/complaints`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         const allData = data.data || [];
@@ -186,6 +193,7 @@ async function loadResolved() {
 async function deleteComplaint(id) {
     if (!confirm('Are you sure you want to delete this complaint?')) return;
     try {
+        const token = await window.clerk.session.getToken();
         const res = await fetch(`${API_URL}/complaints/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
@@ -228,6 +236,7 @@ document.getElementById('complaintForm').addEventListener('submit', async (e) =>
 </svg>`;
 
     try {
+        const token = await window.clerk.session.getToken();
         const res = await fetch(`${API_URL}/complaints`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}` }, // No Content-Type for FormData
@@ -253,6 +262,7 @@ document.getElementById('complaintForm').addEventListener('submit', async (e) =>
 // Load History Logic
 async function loadHistory() {
     try {
+        const token = await window.clerk.session.getToken();
         const res = await fetch(`${API_URL}/complaints`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });

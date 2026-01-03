@@ -3,13 +3,8 @@ const API_URL = `${config.API_BASE_URL}/api`;
 let allComplaints = [];
 let allStaff = [];
 
-// Auth Check
-if (!user || user.role !== 'admin') {
-    window.location.href = '../login.html';
-}
-
-// Initial Load
-loadData();
+// Auth Check managed by dashboard.js
+// Initial Load managed by dashboard.js calling loadData()
 
 /* ================= NAVIGATION ================= */
 function switchTab(tab) {
@@ -34,7 +29,7 @@ function switchTab(tab) {
 async function loadData() {
     // 1. Load Complaints
     try {
-        const resC = await fetch(`${API_URL}/complaints`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const resC = await fetch(`${API_URL}/complaints`, { headers: { 'Authorization': `Bearer ${window.token}` } });
         const dataC = await resC.json();
         if (dataC.success) {
             allComplaints = dataC.data || [];
@@ -51,8 +46,8 @@ async function loadData() {
     try {
         // Fetch both in parallel
         const [resW, resS] = await Promise.all([
-            fetch(`${API_URL}/auth/users/warden`, { headers: { 'Authorization': `Bearer ${token}` } }),
-            fetch(`${API_URL}/auth/users/supervisor`, { headers: { 'Authorization': `Bearer ${token}` } })
+            fetch(`${API_URL}/auth/users/warden`, { headers: { 'Authorization': `Bearer ${window.token}` } }),
+            fetch(`${API_URL}/auth/users/supervisor`, { headers: { 'Authorization': `Bearer ${window.token}` } })
         ]);
 
         const dataW = await resW.json();
@@ -313,45 +308,40 @@ function updateJurisdictionOptions(selectedVal = '') {
 
 function openAddUser() {
     document.getElementById('modalTitle').innerText = 'Add New Staff';
+    document.getElementById('userForm').reset();
     document.getElementById('u-id').value = '';
-    form.reset();
-    updateJurisdictionOptions();
 
-    const passInput = document.getElementById('u-pass');
-    document.getElementById('password-group').style.display = 'block';
-    passInput.required = true;
-    passInput.placeholder = "Set initial password";
-    document.getElementById('pass-hint').innerText = "This password will be sent to the staff member's email.";
-    modal.classList.remove('hidden');
+    // Password field removed from UI, so no need to manage its display
+
+    document.getElementById('userModal').classList.remove('hidden');
 }
 
 function closeUserModal() {
-    modal.classList.add('hidden');
+    document.getElementById('userModal').classList.add('hidden');
 }
 
 function editUser(id) {
-    const u = allStaff.find(s => s._id === id);
-    if (!u) return;
+    // Find user in the global list
+    const user = allStaff.find(s => s._id === id);
+    if (!user) {
+        alert('User not found in local data. Please refresh.');
+        return;
+    }
 
     try {
-        document.getElementById('modalTitle').innerText = 'Edit Staff Details';
-        document.getElementById('u-id').value = u._id;
-        document.getElementById('u-name').value = u.name;
-        document.getElementById('u-email').value = u.email;
-        document.getElementById('u-role').value = u.role;
+        document.getElementById('modalTitle').innerText = 'Edit Staff';
+        document.getElementById('u-id').value = user._id;
+        document.getElementById('u-name').value = user.name;
+        document.getElementById('u-email').value = user.email;
+        document.getElementById('u-role').value = user.role;
+        toggleHostelField();
+        document.getElementById('u-hostel').value = user.assignedHostel || '';
 
-        updateJurisdictionOptions(u.assignedHostel);
+        // Password editing removed
 
-        const passInput = document.getElementById('u-pass');
-        passInput.value = '';
-        document.getElementById('password-group').style.display = 'block';
-        passInput.required = false;
-        passInput.placeholder = "Enter new password to reset (Optional)";
-        document.getElementById('pass-hint').innerText = "Leave empty to keep current password.";
-
-        modal.classList.remove('hidden');
-    } catch (err) {
-        console.error('Error in editUser:', err);
+        document.getElementById('userModal').classList.remove('hidden');
+    } catch (e) {
+        console.error(e);
         alert('Error opening edit form.');
     }
 }
@@ -359,6 +349,7 @@ function editUser(id) {
 async function deleteUser(id) {
     if (!confirm('Are you sure you want to delete this staff member?')) return;
     try {
+        const token = await window.clerk.session.getToken();
         await fetch(`${API_URL}/auth/users/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
         loadData();
     } catch (e) { alert('Delete failed'); }
@@ -380,18 +371,19 @@ xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
 </svg> Saving...`;
 
     const id = document.getElementById('u-id').value;
+    // NOTE: Password handling removed as Clerk handles auth.
     const data = {
         name: document.getElementById('u-name').value,
         email: document.getElementById('u-email').value,
         role: document.getElementById('u-role').value,
-        assignedHostel: document.getElementById('u-hostel').value,
-        password: document.getElementById('u-pass').value
+        assignedHostel: document.getElementById('u-hostel').value
     };
 
     const method = id ? 'PUT' : 'POST';
     const url = id ? `${API_URL}/auth/users/${id}` : `${API_URL}/auth/users`;
 
     try {
+        const token = await window.clerk.session.getToken();
         const res = await fetch(url, {
             method: method,
             headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
@@ -405,7 +397,10 @@ xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         } else {
             alert(json.message);
         }
-    } catch (e) { alert('Operation Failed'); }
+    } catch (e) {
+        console.error(e);
+        alert('Operation Failed: ' + e.message);
+    }
     finally {
         btn.disabled = false;
         btn.innerHTML = originalText;
@@ -428,7 +423,7 @@ async function submitAssign() {
     if (!wardenId) return;
     await fetch(`${API_URL}/complaints/${id}/assign`, {
         method: 'PUT',
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        headers: { 'Authorization': `Bearer ${window.token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ wardenId })
     });
     document.getElementById('assignModal').classList.add('hidden');

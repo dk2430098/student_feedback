@@ -1,16 +1,42 @@
-// Check Auth & Get User
-const token = localStorage.getItem('token');
-const user = JSON.parse(localStorage.getItem('user'));
+// Check Auth & Get User (Handled by clerk-auth.js, we just wait)
+// We expose a render function that clerk-auth.js or this script calls
 
-if (!token || !user) {
-    window.location.href = '../login.html';
+function initDashboard(user) {
+    if (!user) return;
+
+    // Legacy support: set global user for other scripts
+    window.user = user;
+
+    renderSidebar(user);
+
+    // Trigger role-specific loads if they exist
+    if (typeof loadData === 'function') loadData();
+    if (typeof loadUsers === 'function') loadUsers();
 }
 
+// Listen for Clerk initialization
+document.addEventListener('clerk-ready', (e) => {
+    const user = e.detail.user; // Detailed Clerk user or potentially our sync'd user
+    // We need the MONGO user role/details. 
+    // clerk-auth.js should fetch/sync it and pass it.
+
+    // For now, let's assume clerk-auth.js puts the Mongo User in localStorage 'mongo_user' or passes it
+    // Actually, let's just use what we have.
+    // If clerk-auth.js handles the sync, it should probably emit the MONGO user.
+
+    initDashboard(e.detail.mongoUser);
+});
+
+
 // Render Sidebar
-function renderSidebar() {
+// Render Sidebar
+function renderSidebar(user) {
     const sidebar = document.getElementById('sidebar');
     if (!sidebar) return; // Skip if no sidebar (e.g. new layout)
     let colorClass, iconBg;
+
+    // Safety check for user
+    if (!user) return;
 
     if (user.role === 'admin') { colorClass = 'text-purple-400'; iconBg = 'bg-purple-600'; }
     else if (user.role === 'warden') { colorClass = 'text-emerald-400'; iconBg = 'bg-emerald-600'; }
@@ -40,11 +66,10 @@ function renderSidebar() {
 
 // Logout
 function logout() {
-    console.log('Logging out...');
-    localStorage.clear();
-    window.location.href = '../login.html';
+    if (window.clerk) window.clerk.signOut();
+    else window.location.href = '../login.html';
 }
 window.logout = logout;
 
-// Setup
-renderSidebar();
+// Setup handled by initDashboard via Event
+

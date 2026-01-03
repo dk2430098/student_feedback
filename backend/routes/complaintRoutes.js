@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { createComplaint, getComplaints, resolveComplaint, assignComplaint, deleteComplaint, updateComplaint } = require('../controllers/complaintController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { requireAuth, attachUser, authorize } = require('../middleware/clerkAuth');
 const upload = require('../middleware/fileUpload');
 
-router.use(protect);
+router.use(requireAuth);
+router.use(attachUser);
 
 router.route('/')
     .get(getComplaints)

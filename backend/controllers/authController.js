@@ -1,145 +1,92 @@
 const User = require('../models/User');
-const Otp = require('../models/Otp');
-const otpGenerator = require('otp-generator');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 
-// Generate JWT
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '30d'
-    });
-};
-
-// @desc    Register a user (Student)
-// @route   POST /api/auth/signup
-exports.signup = async (req, res) => {
-    const { name, email, password } = req.body;
-
+// @desc    Sync Clerk User to MongoDB (Create or Update)
+// @route   POST /api/auth/sync
+// @access  Private (Clerk Auth)
+// @desc    Sync Clerk User to MongoDB (Create or Update)
+// @route   POST /api/auth/sync
+// @access  Private (Clerk Auth)
+exports.syncUser = async (req, res) => {
     try {
-        let user = await User.findOne({ email });
+        // Data sent from frontend (Clerk JS SDK uses camelCase)
+        const { id, emailAddresses, firstName, lastName, imageUrl } = req.body.user;
 
-        if (user) {
-            // If user exists AND is verified, block them
-            if (user.isVerified) {
-                return res.status(400).json({ success: false, message: 'User already exists' });
-            }
-
-            // If user exists but NOT verified (legacy/stale), remove them so we can start fresh
-            await User.deleteOne({ _id: user._id });
+        if (!req.auth || !req.auth.userId) {
+            throw new Error('Clerk Auth missing or invalid in request');
         }
 
-        // Generate Random 6-digit OTP
-        const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
+        const clerkId = req.auth.userId;
 
-        // Store user DETAILS in Otp collection temporarily (expires in 10m)
-        // We do NOT create the User record yet.
-        await Otp.create({
-            email,
-            otp,
-            tempUser: {
-                name,
-                email,
-                password, // Will be hashed when User is finally created
-                role: 'student',
-                isVerified: true // Will be verified upon creation
-            }
-        });
-
-        res.status(200).json({
-            success: true,
-            message: 'OTP sent to email. User not created yet.',
-            email
-        });
-
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
-    }
-};
-
-// @desc    Verify OTP and Activate Account
-// @route   POST /api/auth/verify-otp
-exports.verifyOtp = async (req, res) => {
-    const { email, otp } = req.body;
-
-    try {
-        // Find most recent OTP for email
-        const response = await Otp.find({ email }).sort({ createdAt: -1 }).limit(1);
-
-        if (response.length === 0 || otp !== response[0].otp) {
-            return res.status(400).json({ success: false, message: 'Invalid or Expired OTP' });
+        let email = null;
+        if (emailAddresses && Array.isArray(emailAddresses) && emailAddresses.length > 0) {
+            email = emailAddresses[0].emailAddress;
+        } else if (req.body.user.primaryEmailAddressId && emailAddresses) {
+            const primary = emailAddresses.find(e => e.id === req.body.user.primaryEmailAddressId);
+            if (primary) email = primary.emailAddress;
         }
 
-        const otpRecord = response[0];
-
-        // Check if user already exists (double check)
-        let user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({ success: false, message: 'User already registered' });
+        // Fallback for snake_case if this endpoint is ever called by webhook
+        if (!email && req.body.user.email_addresses) {
+            const emails = req.body.user.email_addresses;
+            if (emails.length > 0) email = emails[0].email_address;
         }
 
-        // CREATE User now using stored temp data
-        user = await User.create(otpRecord.tempUser);
+        if (!email) {
+            console.error('Email missing in payload:', req.body.user);
+            throw new Error('Email address is missing from Clerk user data');
+        }
 
-        // Delete used OTP
-        await Otp.deleteOne({ _id: otpRecord._id });
+        const name = `${firstName || ''} ${lastName || ''}`.trim() || 'User';
 
-        sendTokenResponse(user, 201, res);
-
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
-    }
-};
-
-// @desc    Login User
-// @route   POST /api/auth/login
-exports.login = async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        const user = await User.findOne({ email }).select('+password');
+        // Try to find user by Clerk ID
+        let user = await User.findOne({ clerkId });
 
         if (!user) {
-            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+            // Check if user exists by email (Legacy user migration)
+            user = await User.findOne({ email });
+
+            if (user) {
+                // Link Clerk ID to existing user
+                user.clerkId = clerkId;
+                if (!user.profileImage && imageUrl) user.profileImage = imageUrl;
+                await user.save();
+            } else {
+                // Create new user
+                user = await User.create({
+                    clerkId,
+                    email,
+                    name,
+                    profileImage: imageUrl,
+                    role: 'student', // Default role
+                    isVerified: true
+                });
+            }
+        } else {
+            // User exists with Clerk ID, verify email consistency if needed
+            if (user.email !== email) {
+                user.email = email;
+                await user.save();
+            }
         }
 
-        const isMatch = await user.matchPassword(password);
-
-        if (!isMatch) {
-            return res.status(401).json({ success: false, message: 'Invalid credentials' });
-        }
-
-        if (!user.isVerified) {
-            return res.status(401).json({ success: false, message: 'Please verify your email first' });
-        }
-
-        sendTokenResponse(user, 200, res);
+        res.status(200).json({ success: true, user });
 
     } catch (err) {
+        console.error('Sync Error:', err);
         res.status(500).json({ success: false, message: err.message });
     }
-};
-
-// @desc    Log user out / clear cookie
-// @route   GET /api/auth/logout
-exports.logout = async (req, res) => {
-    res.cookie('token', 'none', {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true
-    });
-
-    res.status(200).json({
-        success: true,
-        data: {}
-    });
 };
 
 // @desc    Get Current User
 // @route   GET /api/auth/me
+// @access  Private
 exports.getMe = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);
-        res.status(200).json({ success: true, data: user });
+        // req.user is attached by the `attachUser` middleware
+        if (!req.user) {
+            return res.status(404).json({ success: false, message: 'User not found in local DB. Please sync first.' });
+        }
+        res.status(200).json({ success: true, data: req.user });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
@@ -155,33 +102,6 @@ exports.getUsersByRole = async (req, res) => {
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
-};
-
-// Helper to generate JWT and send cookie/response
-const sendTokenResponse = (user, statusCode, res) => {
-    const token = generateToken(user._id);
-
-    const options = {
-        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-        httpOnly: true
-    };
-
-    if (process.env.NODE_ENV === 'production') {
-        options.secure = true;
-    }
-
-    res.status(statusCode).cookie('token', token, options).json({
-        success: true,
-        token,
-        user: {
-            id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            assignedHostel: user.assignedHostel,
-            profileImage: user.profileImage
-        }
-    });
 };
 
 // @desc    Update user profile
@@ -217,3 +137,4 @@ exports.updateProfile = async (req, res) => {
         res.status(500).json({ success: false, message: err.message });
     }
 };
+

@@ -14,6 +14,22 @@ A digital grievance redressal system designed effectively for **NIT Manipur**. T
 
 ---
 
+## 📸 Screenshots
+
+| Landing Page | Login Screen |
+|:---:|:---:|
+| <img src="./screenshots/landing.png" width="400" alt="Landing Page"> | <img src="./screenshots/login.png" width="400" alt="Login Screen"> |
+
+| Student Dashboard | Admin Dashboard |
+|:---:|:---:|
+| <img src="./screenshots/student_dashboard.png" width="400" alt="Student Dashboard"> | <img src="./screenshots/admin_dashboard.png" width="400" alt="Admin Dashboard"> |
+
+| Complaint Form | Resolution View |
+|:---:|:---:|
+| <img src="./screenshots/complaint_form.png" width="400" alt="Complaint Form"> | <img src="./screenshots/resolution.png" width="400" alt="Resolution View"> |
+
+---
+
 ## 🚀 Why This Project?
 
 In a large campus environment, students often face difficulties in getting their issues resolved—whether it's a broken fan in the hostel, unhygienic mess food, or academic concerns. Traditional methods (applications/letters) are slow and hard to track.

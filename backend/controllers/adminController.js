@@ -6,7 +6,7 @@ const sendEmail = require('../utils/sendEmail');
 // @access  Admin
 exports.createStaff = async (req, res) => {
     try {
-        const { name, email, password, role, assignedHostel } = req.body;
+        const { name, email, role, assignedHostel } = req.body;
 
         // Check if user exists
         let user = await User.findOne({ email });
@@ -17,10 +17,11 @@ exports.createStaff = async (req, res) => {
         user = await User.create({
             name,
             email,
-            password,
             role,
             assignedHostel: role === 'warden' ? assignedHostel : undefined,
-            isVerified: true
+            isVerified: true,
+            // Generate temporary Clerk ID to satisfy unique constraint
+            clerkId: `invitation_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
         });
 
         // SEND EMAIL
@@ -28,7 +29,7 @@ exports.createStaff = async (req, res) => {
             await sendEmail({
                 email: user.email,
                 subject: 'NITMN Feedback Portal - Staff Account Created',
-                message: `Hello ${user.name},\n\nYour staff account has been created.\n\nRole: ${role}\nUsername: ${email}\nPassword: ${password}\n\nPlease login and change your password immediately.`
+                message: `Hello ${user.name},\n\nYour staff account has been created.\n\nRole: ${role}\nUsername: ${email}\n\nPlease Sign Up / Log In using this email on the portal to set your password and access your dashboard.`
             });
             console.log(`Email sent to ${email}`);
         } catch (emailErr) {
@@ -39,7 +40,7 @@ exports.createStaff = async (req, res) => {
         res.status(201).json({
             success: true,
             data: user,
-            message: `User created! Password sent to ${email}`
+            message: `User created! Invitation sent to ${email}`
         });
     } catch (err) {
         console.error(err);
@@ -52,7 +53,7 @@ exports.createStaff = async (req, res) => {
 // @access  Admin
 exports.updateStaff = async (req, res) => {
     try {
-        const { name, email, password, role, assignedHostel } = req.body;
+        const { name, email, role, assignedHostel } = req.body;
 
         let user = await User.findById(req.params.id);
 
@@ -63,7 +64,7 @@ exports.updateStaff = async (req, res) => {
         // Update basic fields
         if (name) user.name = name;
         if (email) user.email = email;
-        if (password) user.password = password;
+        // Password updates handled by Clerk exclusively
 
         // Update Role & Jurisdiction
         if (role) {
@@ -82,18 +83,7 @@ exports.updateStaff = async (req, res) => {
 
         await user.save();
 
-        if (password) {
-            try {
-                await sendEmail({
-                    email: user.email,
-                    subject: 'NITMN Feedback Portal - Password Updated',
-                    message: `Hello ${user.name},\n\nYour staff account password has been updated by the Admin.\n\nNew Password: ${password}\n\nPlease login with your new credentials.`
-                });
-                console.log(`Password reset email sent to ${user.email}`);
-            } catch (emailErr) {
-                console.error('Email send failed:', emailErr);
-            }
-        }
+        // Removed SendEmail password logic
 
         res.status(200).json({
             success: true,

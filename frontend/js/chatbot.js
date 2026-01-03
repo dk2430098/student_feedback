@@ -25,7 +25,8 @@ const generateResponse = async (chatElement) => {
         const response = await fetch(API_URL, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                ...(window.token ? { "Authorization": `Bearer ${window.token}` } : {})
             },
             body: JSON.stringify({
                 message: userMessage

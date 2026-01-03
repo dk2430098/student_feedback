@@ -3,9 +3,12 @@ let allComplaints = [];
 let currentFilter = 'pending'; // 'pending' or 'resolved'
 
 // Init
-loadComplaints();
-updateDashboardTitle();
-loadProfile();
+// Init via dashboard.js
+window.loadData = async function () {
+    await loadComplaints();
+    await updateDashboardTitle();
+    await loadProfile();
+};
 
 function previewImage(input) {
     if (input.files && input.files[0]) {
@@ -56,7 +59,7 @@ async function updateDashboardTitle() {
 async function loadProfile() {
     try {
         const res = await fetch(`${API_URL}/auth/me`, {
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: { 'Authorization': `Bearer ${window.token}` }
         });
         const data = await res.json();
         if (data.success) {
@@ -89,7 +92,7 @@ document.getElementById('profile-form').addEventListener('submit', async (e) => 
     try {
         const res = await fetch(`${API_URL}/auth/profile`, {
             method: 'PUT',
-            headers: { 'Authorization': `Bearer ${token}` }, // Content-Type handled automatically with FormData
+            headers: { 'Authorization': `Bearer ${window.token}` }, // Content-Type handled automatically with FormData
             body: formData
         });
         const data = await res.json();
@@ -105,7 +108,7 @@ document.getElementById('profile-form').addEventListener('submit', async (e) => 
 async function loadComplaints() {
     try {
         const res = await fetch(`${API_URL}/complaints`, {
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: { 'Authorization': `Bearer ${window.token}` }
         });
         const data = await res.json();
         allComplaints = data.data || [];
@@ -237,7 +240,7 @@ async function updateStatus(id, status) {
 
     await fetch(`${API_URL}/complaints/${id}/resolve`, {
         method: 'PUT',
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        headers: { 'Authorization': `Bearer ${window.token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ status, resolutionNotes: 'Status automatically updated to In-Progress' })
     });
     loadComplaints();
@@ -318,7 +321,7 @@ document.getElementById('resolveForm').addEventListener('submit', async (e) => {
     try {
         await fetch(`${API_URL}/complaints/${id}/resolve`, {
             method: 'PUT',
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${window.token}` },
             body: formData
         });
         document.getElementById('resolveModal').classList.add('hidden');
